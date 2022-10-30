@@ -28,5 +28,8 @@
     "passport-local": "^1.0.0",
     "ravepay": "^1.2.4",
     "validator": "^11.1.0"
+  },
+  "engines": {
+    "node": "^12.11.1"
   }
 }
