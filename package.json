@@ -13,13 +13,7 @@
     "test": "SET \"NODE_ENV=test\" && mocha tests/**/*.test.js",
     "test-watch": "nodemon --exec \"npm test\""
   },
-  "keywords": [
-    "NodeJS",
-    "ReactJS",
-    "ExpressJS",
-    "Mongoose",
-    "MongoDB"
-  ],
+  "keywords": [],
   "author": "Uzoanya Dominic",
   "license": "MIT",
   "dependencies": {
@@ -34,16 +28,5 @@
     "passport-local": "^1.0.0",
     "ravepay": "^1.2.4",
     "validator": "^11.1.0"
-  },
-  "devDependencies": {
-    "expect": "^1.20.2",
-    "mocha": "^6.2.0",
-    "nodemon": "^1.19.1",
-    "supertest": "^4.0.2"
-  },
-  "engines": {
-    "node": "10.15.3",
-    "npm": "6.9.1-next.0",
-    "yarn": "1.17.3"
   }
 }
