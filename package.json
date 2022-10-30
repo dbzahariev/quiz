@@ -1,0 +1,49 @@
+{
+  "name": "instaquiz",
+  "version": "1.0.0",
+  "description": "A fun and exciting quiz application built with ReactJS, express, and MongoDB.",
+  "main": "server.js",
+  "scripts": {
+    "client": "npm run start --prefix client",
+    "client-install": "npm install --prefix client",
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+    "test": "SET \"NODE_ENV=test\" && mocha tests/**/*.test.js",
+    "test-watch": "nodemon --exec \"npm test\""
+  },
+  "keywords": [
+    "NodeJS",
+    "ReactJS",
+    "ExpressJS",
+    "Mongoose",
+    "MongoDB"
+  ],
+  "author": "Uzoanya Dominic",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "concurrently": "^4.1.2",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.9",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "ravepay": "^1.2.4",
+    "validator": "^11.1.0"
+  },
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^6.2.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
+  },
+  "engines": {
+    "node": "10.15.3",
+    "npm": "6.9.1-next.0",
+    "yarn": "1.17.3"
+  }
+}
