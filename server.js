@@ -13,7 +13,7 @@ const app = express();
 
 const publicPath = path.resolve(__dirname, 'client', 'build');
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 mongoose.connect(database_URI, {
     useNewUrlParser: true,
