@@ -6,32 +6,32 @@ import PropTypes from 'prop-types';
 
 class Home extends Component {
 
-    componentDidMount () {
+    componentDidMount() {
         if (this.props.auth.authenticated) {
             this.props.history.push('/dashboard');
         }
     }
 
-    render () {
+    render() {
         return (
             <Fragment>
-                <Helmet><title>Instaquiz - Home</title></Helmet>
+                <Helmet><title>Куиз - Начало</title></Helmet>
                 <div id="home">
                     <section>
                         <div style={{ textAlign: 'center' }}>
                             <span className="mdi mdi-cube-outline cube"></span>
                         </div>
-                        <h1>InstaQuiz</h1>
+                        <h1>Куиз</h1>
                         <div className="playButtonContainer">
                             <ul>
                                 <li>
-                                    <Link className="playButton" to="/play/instructions">Play</Link>
+                                    <Link className="playButton" to="/play">Нова игра</Link>
                                 </li>
                             </ul>
                         </div>
                         <div className="authContainer">
-                            <Link to="/login" className="authButtons" id="loginButton">Login</Link>
-                            <Link to="/register" className="authButtons" id="signupButton">Signup</Link>
+                            {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
+                            {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
                         </div>
                     </section>
                 </div>

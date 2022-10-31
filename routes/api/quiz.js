@@ -37,13 +37,11 @@ router.post('/', (req, res) => {
 // @desc get questions
 // @access Private
 router.get('/getFreeQuiz', (req, res) => {
-    console.log('brrr')
     Quiz.aggregate([{ $sample: { size: 15 } }])
         .exec((err, result) => {
             if (err) {
                 return console.log(err);
             }
-            console.log('hi aggre', err)
             res.json(result);
         });
 });

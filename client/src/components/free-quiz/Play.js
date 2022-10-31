@@ -17,7 +17,7 @@ import wrongNotification from '../../assets/audio/wrong-answer.mp3';
 import buttonSound from '../../assets/audio/button-sound.mp3';
 
 class Play extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             type: '',
@@ -44,7 +44,7 @@ class Play extends Component {
         this.interval = null
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this.props.getFreeQuestions();
         this.setState({
             loading: true
@@ -52,11 +52,11 @@ class Play extends Component {
         this.startTimer();
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         clearInterval(this.interval);
     }
 
-    UNSAFE_componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (!isEmpty(nextProps.quiz)) {
             this.setState({
                 questions: nextProps.quiz.questions,
@@ -92,14 +92,14 @@ class Play extends Component {
         }
     }
 
-    displayQuestion (questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) {
+    displayQuestion(questions = this.state.questions, currentQuestion, nextQuestion, previousQuestion) {
         let { currentQuestionIndex } = this.state;
         if (!isEmpty(this.state.questions)) {
             questions = this.state.questions;
             currentQuestion = questions[currentQuestionIndex];
             nextQuestion = questions[currentQuestionIndex + 1];
             previousQuestion = questions[currentQuestionIndex - 1];
-            const answer =  currentQuestion.answer;
+            const answer = currentQuestion.answer;
             this.setState({
                 currentQuestion,
                 nextQuestion,
@@ -162,7 +162,7 @@ class Play extends Component {
 
     hadleQuitButtonClick = (e) => {
         this.playButtonSound();
-        if (window.confirm ('Are yoiu sure you want to quit?')) {
+        if (window.confirm('Сигурен ли си, че искаш да излезеш от куиза?')) {
             this.props.history.push('/');
         }
     }
@@ -201,13 +201,13 @@ class Play extends Component {
                 if (randomNumbers.length < 2) {
                     if (!randomNumbers.includes(randomNumber) && !randomNumbers.includes(indexOfAnswer)) {
                         randomNumbers.push(randomNumber);
-                        count ++;
+                        count++;
                     } else {
                         while (true) {
                             const newRandomNumber = Math.round(Math.random() * 3);
                             if (!randomNumbers.includes(newRandomNumber) && newRandomNumber !== indexOfAnswer) {
                                 randomNumbers.push(newRandomNumber);
-                                count ++;
+                                count++;
                                 break;
                             }
                         }
@@ -215,7 +215,7 @@ class Play extends Component {
                 }
             }
         } while (count < 2);
-            options.forEach((option, index) => {
+        options.forEach((option, index) => {
             if (randomNumbers.includes(index)) {
                 option.style.visibility = 'hidden';
             }
@@ -269,7 +269,7 @@ class Play extends Component {
 
     correctAnswer = () => {
         M.toast({
-            html: 'Correct Answer!',
+            html: 'Верен отговор!',
             classes: 'toast-valid',
             displayLength: 1500
         });
@@ -290,7 +290,7 @@ class Play extends Component {
     wrongAnswer = () => {
         navigator.vibrate(1000);
         M.toast({
-            html: 'Wrong Answer!',
+            html: 'Грешен отговор!',
             classes: 'toast-invalid',
             displayLength: 1500
         });
@@ -308,7 +308,7 @@ class Play extends Component {
     }
 
     endGame = () => {
-        alert('Quiz has ended!');
+        alert('Край на куиза!');
         const quizData = {
             score: this.state.score,
             type: this.state.type,
@@ -325,7 +325,7 @@ class Play extends Component {
 
     startTimer = () => {
         // const countDownTime = Date.now() + 900000;
-        const countDownTime = Date.now() + 180000;
+        const countDownTime = Date.now() + 1800000;
         this.interval = setInterval(() => {
             const now = new Date();
             const distance = countDownTime - now;
@@ -361,7 +361,7 @@ class Play extends Component {
         document.getElementById('button-sound').play();
     }
 
-    render () {
+    render() {
         const { currentQuestion, questions, loading, time } = this.state;
 
         let quizContent;
@@ -369,9 +369,9 @@ class Play extends Component {
         if (isEmpty(questions) || loading === true) {
             quizContent = <Loader />;
         } else {
-            quizContent =  (
+            quizContent = (
                 <Fragment>
-                    <Helmet><title>Free Quiz - Instaquiz</title></Helmet>
+                    <Helmet><title>Куиз</title></Helmet>
                     <Fragment>
                         <audio id="correct-audio" src={correctNotification}></audio>
                         <audio id="wrong-audio" src={wrongNotification}></audio>
@@ -386,19 +386,20 @@ class Play extends Component {
                                     className={classnames('mdi mdi-set-center mdi-24px lifeline-icon', {
                                         'lifeline-icon-empty': this.state.fiftyFifty === 0
                                     })}>
-                                        <span className="lifeline">{this.state.fiftyFifty}</span>
+                                    <span className="lifeline">{this.state.fiftyFifty}</span>
                                 </span>
                             </p>
+                            {/* Hints start */}
                             <p>
                                 {this.state.hints > 0
                                     ?
-                                     <span
+                                    <span
                                         onClick={this.handleHints}
                                         id="hints"
                                         className={classnames('mdi mdi-lightbulb-on mdi-24px lifeline-icon', {
                                             'lifeline-icon-empty': this.state.hints === 0
                                         })}>
-                                            <span className="lifeline">{this.state.hints}</span>
+                                        <span className="lifeline">{this.state.hints}</span>
                                     </span>
                                     :
                                     <span
@@ -407,16 +408,19 @@ class Play extends Component {
                                         className={classnames('mdi mdi-lightbulb-on-outline mdi-24px lifeline-icon', {
                                             'lifeline-icon-empty': this.state.hints === 0
                                         })}>
-                                            <span className="lifeline">{this.state.hints}</span>
+                                        <span className="lifeline">{this.state.hints}</span>
                                     </span>
                                 }
                             </p>
+                            {/* Hints end */}
                         </div>
                         <p>
-                            <span>{this.state.currentQuestionIndex + 1} of {this.state.numberOfQuestions }</span>
+                            {/* Number Question start */}
+                            <span>{this.state.currentQuestionIndex + 1} от {this.state.numberOfQuestions}</span>
+                            {/* Number Question end */}
                             <span className={classnames('right valid', {
-                                'warning' : time.distance <= 120000,
-                                'invalid' : time.distance < 30000
+                                'warning': time.distance <= 120000,
+                                'invalid': time.distance < 30000
                             })}>
                                 <span className="mdi mdi-clock-outline mdi-24px" style={{ position: 'relative', top: '2px' }}></span>
                                 {time.minutes}:{time.seconds}
@@ -437,28 +441,28 @@ class Play extends Component {
                         <button
                             className={classnames('', { 'disable': this.state.previousButtonDisabled })}
                             onClick={this.handlePreviousButtonClick}>
-                                <span
-                                    style={{ marginRight: '5px' }}
-                                    className="mdi mdi-chevron-double-left left">
-                                </span>
-                            Previous
+                            <span
+                                style={{ marginRight: '5px' }}
+                                className="mdi mdi-chevron-double-left left">
+                            </span>
+                            Предишен
                         </button>
                         <button
                             className={classnames('', { 'disable': this.state.nextButtonDisabled })}
                             onClick={this.handleNextButtonClick}>
-                                <span
-                                    style={{ marginLeft: '5px' }}
-                                    className="mdi mdi-chevron-double-right right">
-                                </span>
-                                Next
-                            </button>
+                            <span
+                                style={{ marginLeft: '5px' }}
+                                className="mdi mdi-chevron-double-right right">
+                            </span>
+                            Следващт
+                        </button>
                         <button
                             onClick={this.hadleQuitButtonClick}>
-                                <span
-                                    style={{ marginLeft: '5px' }}
-                                    className="mdi mdi-close right">
-                                </span>
-                            Quit
+                            <span
+                                style={{ marginLeft: '5px' }}
+                                className="mdi mdi-close right">
+                            </span>
+                            Изход
                         </button>
                     </div>
                 </Fragment>
@@ -467,8 +471,8 @@ class Play extends Component {
 
         return (
             <div id="quiz">
-                <h3>Free Quiz Mode</h3>
-                {/* {this.state.type ? <h3>{this.state.type}</h3> : <span>No Type found</span>} */}
+                <h3>Куиз</h3>
+                {/* {this.state.type ? <h3>Категория: {this.state.type}</h3> : <span>Няма зададена категория</span>} */}
                 {quizContent}
             </div>
         );
