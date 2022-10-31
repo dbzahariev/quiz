@@ -10,6 +10,7 @@ const validateAddQuestion = require('../../utils/validation/addQuestion');
 // @desc add question
 // @access Private
 router.post('/', (req, res) => {
+    console.log('add quiz', req.body)
     const { errors, isValid } = validateAddQuestion(req.body);
 
     if (!isValid) {

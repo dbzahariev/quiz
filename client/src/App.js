@@ -12,13 +12,14 @@ import Register from './components/auth/Register';
 import Play from './components/free-quiz/Play';
 import FreeGameInstructions from './components/free-quiz/FreeGameInstructions';
 import QuizSummary from './components/free-quiz/QuizSummary';
+import AddNewQuestion from './components/addNewQuestion';
 import Dashboard from './components/user/Dashboard';
 import Profile from './components/user/Profile';
 import Games from './components/user/Games';
 import Funds from './components/user/Funds';
 import Support from './components/user/Support';
 
-import PrivateRoute from './components/common/PrivateRoute'; 
+import PrivateRoute from './components/common/PrivateRoute';
 
 import store from './store';
 import setAuthToken from './utils/setAuthToken';
@@ -41,7 +42,7 @@ if (localStorage.jwtToken) {
 }
 
 class App extends Component {
-	render () {
+	render() {
 		return (
 			<Provider store={store}>
 				<Router>
@@ -54,6 +55,7 @@ class App extends Component {
 							<Route path="/play" exact component={Play} />
 							<Route path="/play/instructions" exact component={FreeGameInstructions} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
+							<Route path="/addNewQuestion" exact component={AddNewQuestion} />
 							<Switch>
 								<PrivateRoute path="/dashboard" exact component={Dashboard} />
 							</Switch>

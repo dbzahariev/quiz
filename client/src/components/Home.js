@@ -32,6 +32,8 @@ class Home extends Component {
                         <div className="authContainer">
                             {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
                             {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
+                            {sessionStorage.getItem("adminPass") === "1" ?
+                                <Link to="/addNewQuestion" className="authButtons" id="signupButton">Add new question</Link> : <div></div>}
                         </div>
                     </section>
                 </div>
