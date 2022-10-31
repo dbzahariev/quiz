@@ -1,52 +1,48 @@
-require('dotenv').config()
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
-const { database_URI } = require('./config/keys');
+// Import npm packages
+const express = require("express");
+const mongoose = require("mongoose");
 const morgan = require("morgan");
-
-const admin = require('./routes/api/admin');
-const profile = require('./routes/api/profile');
-const quiz = require('./routes/api/quiz');
-const users = require('./routes/api/users');
+const path = require("path");
 
 const app = express();
+const PORT = process.env.PORT || 8080; // Step 1
 
-// const publicPath = path.resolve(__dirname, 'client', 'build');
+const routes = require("./routes/api");
+const routesChat = require("./routes/chat");
 
-const PORT = process.env.PORT || 8080;
+require("dotenv").config();
 
-mongoose.connect(database_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => console.log('Database Connected!'))
-    .catch(err => console.log(err));
+// Step 2
+let newUrl =
+  "mongodb+srv://ramsess90:Abc123456@cluster0.ewmw7.mongodb.net/db1?retryWrites=true&w=majority";
+let oldUrl = "mongodb://localhost/mern_youtube";
 
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-// app.use(express.static(publicPath));
-app.use(morgan('tiny'));
-
-app.use('/api/admin', admin);
-app.use('/api/profile', profile);
-app.use('/api/quiz', quiz);
-app.use('/api/users', users);
-
-// app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(publicPath, 'index.html'));
-// });
-
-// app.get('/', (req, res) => {
-//     res.send({
-//         message: 'Hello World!'
-//     });
-// });
-
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("client/build"));
+if (process.env.MONGODB_URI === undefined) {
+  console.log("Not found DB (process.env.MONGODB_URI)!");
 }
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}!`));
-module.exports = { app };
+mongoose.connect(process.env.MONGODB_URI || newUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+mongoose.connection.on("connected", () => {
+  console.log("Mongoose is connected!!!!");
+});
+
+// Data parsing
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// Step 3
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
+// HTTP request logger
+app.use(morgan("tiny"));
+app.use("/api", routes);
+app.use("/chat", routesChat);
+
+app.listen(PORT, console.log(`Server is starting at ${PORT}`));
