@@ -316,7 +316,7 @@ class Play extends Component {
             numberOfAnsweredQuestions: this.state.numberOfAnsweredQuestions,
             correctAnswers: this.state.correctAnswers,
             wrongAnswers: this.state.wrongAnswers,
-            usedHints: 5 - this.state.hints,
+            usedHints: 0 - this.state.hints,
             usedfiftyFifty: 2 - this.state.fiftyFifty,
         };
 

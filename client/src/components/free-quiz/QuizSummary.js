@@ -77,8 +77,8 @@ class QuizSummary extends Component {
                         <span className="stat left">Общ брой на отговорените въпроси: </span><span className="right">{this.state.numberOfAnsweredQuestions}</span><br />
                         <span className="stat left">Верни отговори: </span><span className="right">{this.state.correctAnswers}</span><br />
                         <span className="stat left">Грешни отговори: </span><span className="right">{this.state.wrongAnswers}</span><br />
-                        <span className="stat left">Подсказки: </span><span className="right">{this.state.usedHints * -1} out of 5</span><br />
-                        <span className="stat left">50-50: </span><span className="right">{this.state.usedfiftyFifty} out of 2</span><br />
+                        <span className="stat left">Подсказки: </span><span className="right">{10 - (this.state.usedHints * -1)} от 10</span><br />
+                        <span className="stat left">50 - 50: </span><span className="right">{this.state.usedfiftyFifty} от 2</span><br />
                     </div>
                     <section>
                         <ul>
