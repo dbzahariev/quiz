@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const { database_URI } = require('./config/keys');
+const morgan = require("morgan");
 
 const admin = require('./routes/api/admin');
 const profile = require('./routes/api/profile');
@@ -26,6 +27,7 @@ mongoose.connect(database_URI, {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // app.use(express.static(publicPath));
+app.use(morgan('tiny'));
 
 app.use('/api/admin', admin);
 app.use('/api/profile', profile);
