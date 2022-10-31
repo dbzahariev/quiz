@@ -29,7 +29,7 @@
     "validator": "^13.7.0"
   },
   "engines": {
-    "node": "18.12.0",
+    "node": "12.12.0",
     "npm": "8.19.2"
   },
   "directories": {

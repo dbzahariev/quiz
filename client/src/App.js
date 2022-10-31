@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import jwt_decode from 'jwt-decode';
 
@@ -54,7 +54,7 @@ class App extends Component {
 							<Route path="/play" exact component={Play} />
 							<Route path="/play/instructions" exact component={FreeGameInstructions} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
-							{/* <Switch>
+							<Switch>
 								<PrivateRoute path="/dashboard" exact component={Dashboard} />
 							</Switch>
 							<Switch>
@@ -68,7 +68,7 @@ class App extends Component {
 							</Switch>
 							<Switch>
 								<PrivateRoute path="/support" exact component={Support} />
-							</Switch> */}
+							</Switch>
 							<Footer />
 						</Fragment>
 					</ScrollToTop>

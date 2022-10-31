@@ -15,11 +15,11 @@ export const fetchQuiz = () => dispatch => {
 
 export const getFreeQuestions = () => (dispatch) => {
     dispatch(setQuizLoading());
-    axios.get('/api/quiz/getFreeQuiz')
+    axios.get('api/getFreeQuiz')
         .then(res => dispatch({
-                type: LOAD_QUIZ,
-                payload: res.data
-            })
+            type: LOAD_QUIZ,
+            payload: res.data
+        })
         )
         .catch(err => {
             console.error(err);

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import M from 'materialize-css';
@@ -484,4 +485,4 @@ const mapStateToProps = (state) => ({
     quiz: state.quiz
 });
 
-export default connect(mapStateToProps, { endFreeQuiz, getFreeQuestions });
+export default connect(mapStateToProps, { endFreeQuiz, getFreeQuestions })(withRouter(Play));

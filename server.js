@@ -42,6 +42,6 @@ if (process.env.NODE_ENV === "production") {
 
 // HTTP request logger
 app.use(morgan("tiny"));
-app.use("/api", routes);
+app.use("/api/", routes);
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));
