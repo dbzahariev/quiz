@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport');
 const path = require('path');
 const { database_URI } = require('./config/keys');
 
@@ -23,11 +22,6 @@ mongoose.connect(database_URI, {
     .then(() => console.log('Database Connected!'))
     .catch(err => console.log(err));
 
-// Passport middleware
-app.use(passport.initialize());
-
-// Passport config
-require('./config/passport')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

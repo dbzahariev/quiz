@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 const router = express.Router();
 
 const Quiz = require('../../models/Quiz');
@@ -10,7 +9,7 @@ const validateAddQuestion = require('../../utils/validation/addQuestion');
 // @route POST /api/quizr
 // @desc add question
 // @access Private
-router.post('/', /*passport.authenticate('jwt-admin', { session: false }),*/(req, res) => {
+router.post('/', (req, res) => {
     const { errors, isValid } = validateAddQuestion(req.body);
 
     if (!isValid) {
@@ -52,7 +51,7 @@ router.get('/getFreeQuiz', (req, res) => {
 // @route GET /api/quiz/all
 // @desc get questions
 // @access Private
-router.get('/all', (passport.authenticate('jwt-admin', { session: false })), (req, res) => {
+router.get('/all', (req, res) => {
     console.log('hi all')
     Quiz.find()
         .then(quizzess => res.json(quizzess))
@@ -63,7 +62,7 @@ router.get('/all', (passport.authenticate('jwt-admin', { session: false })), (re
 // @route GET /api/quiz/category/:category
 // @desc get questions by category
 // @access Private
-router.get('/category/:quizCategory', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.get('/category/:quizCategory', (req, res) => {
     Quiz.find({ type: req.params.quizCategory })
         .then(quizzes => res.json(quizzes))
         .catch(err => console.log(err));
@@ -73,7 +72,7 @@ router.get('/category/:quizCategory', passport.authenticate('jwt-admin', { sessi
 // @route PUT /api/quiz/updateQuestion/:id
 // @desc update quiz question by Id
 // @access Private
-router.put('/updateQuestion/:id', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.put('/updateQuestion/:id', (req, res) => {
     const { errors, isValid } = validateAddQuestion(req.body);
 
     if (!isValid) {
@@ -120,7 +119,7 @@ router.put('/updateQuestion/:id', passport.authenticate('jwt-admin', { session: 
 // @route DELETE /api/quiz/all
 // @desc remove questions
 // @access Private
-router.delete('/all', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.delete('/all', (req, res) => {
     Quiz.remove()
         .then(info => res.json({ message: 'Successfully removed questions' }))
         .catch(err => console.log(err));
@@ -130,7 +129,7 @@ router.delete('/all', passport.authenticate('jwt-admin', { session: false }), (r
 // @route DELETE /api/quiz/category/:category
 // @desc removes quiz questions by category
 // @access Private
-router.delete('/category/:quizCategory', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.delete('/category/:quizCategory', (req, res) => {
     Quiz.remove({ type: req.params.quizCategory })
         .then(() => res.json({ message: 'Successfully removed questions' }))
         .catch(err => console.log(err));
@@ -140,7 +139,7 @@ router.delete('/category/:quizCategory', passport.authenticate('jwt-admin', { se
 // @route DELETE /api/quiz/:id
 // @desc removes quiz question by id
 // @access Private
-router.delete('/:id', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.delete('/:id', (req, res) => {
     Quiz.findByIdAndDelete({ _id: req.params.id })
         .then(() => res.json({ message: 'Successfully removed question' }))
         .catch(err => console.log(err));

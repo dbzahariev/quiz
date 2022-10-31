@@ -1,5 +1,4 @@
 const express = require('express');
-const passport = require('passport');
 
 const validateProfileInput = require('../../utils/validation/profile');
 
@@ -9,7 +8,7 @@ const router = express.Router();
 // @route PUT /api/profiles
 // @desc Create or edit user profile
 // @access Private
-router.put('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/', (req, res) => {
     const { errors, isValid } = validateProfileInput(req.body);
 
     if (!isValid) {

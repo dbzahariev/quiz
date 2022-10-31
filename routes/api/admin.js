@@ -1,6 +1,5 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
-const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
@@ -39,7 +38,7 @@ router.post('/register', (req, res) => {
                 if (err) {
                     return console.log(err);
                 }
-                
+
                 bcrypt.hash(admin.password, salt, (err, hash) => {
                     if (err) {
                         return console.log(err);
@@ -100,14 +99,14 @@ router.post('/login', (req, res) => {
                 })
                 .catch(err => console.log(err));
         })
-        .catch(err => {});
+        .catch(err => { });
 });
 
 // Register change password
 // @route POST /api/admin/changePassword
 // @desc change adminpassword
 // @access Private
-router.put('/changePassword', passport.authenticate('jwt-admin', { session: false }), (req, res) => {
+router.put('/changePassword', { session: false }), (req, res) => {
     const { errors, isValid } = validateChangeAdminPassword(req.body);
 
     if (!isValid) {
@@ -130,7 +129,7 @@ router.put('/changePassword', passport.authenticate('jwt-admin', { session: fals
                         errors.currentPassword = 'Incorrect password!';
                         return res.status(401).json(errors);
                     }
-                    
+
                     bcrypt.genSalt(10, (err, salt) => {
                         if (err) {
                             return console.log(err);

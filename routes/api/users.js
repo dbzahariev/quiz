@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 
 const keys = require('../../config/keys');
 
@@ -152,7 +151,7 @@ router.post('/login', (req, res) => {
 // @route POST /api/users/changePassword
 // @desc change user password
 // @access Public
-router.put('/changePassword', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/changePassword', (req, res) => {
     const { errors, isValid } = validateChangePasswordInput(req.body);
     const { currentPassword, newPassword } = req.body;
 
@@ -205,7 +204,7 @@ router.put('/changePassword', passport.authenticate('jwt', { session: false }), 
 // @route PUT /api/users/updateData
 // @desc update user data
 // @access Private
-router.put('/updateData', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.put('/updateData', (req, res) => {
     console.log(req.user.id);
     const { errors, isValid } = validateUpdateDataInput(req.body);
 
@@ -280,7 +279,7 @@ router.put('/updateData', passport.authenticate('jwt', { session: false }), (req
 // @route GET /api/users/quiz/category/:category
 // @desc get questions by category
 // @access Private
-router.get('/quiz/category/:quizCategory', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/quiz/category/:quizCategory', (req, res) => {
     Quiz.find({ type: req.params.quizCategory })
         .then(quizzes => res.json(quizzes))
         .catch(err => console.log(err));
@@ -290,7 +289,7 @@ router.get('/quiz/category/:quizCategory', passport.authenticate('jwt', { sessio
 // @route POST /api/users/addCard
 // @desc Add Credit card to user account
 // @access Private
-router.post('/addCard', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/addCard', (req, res) => {
     console.log('card request');
     console.log(req.user);
     Profile.findOne({ user: req.user._id })
@@ -349,7 +348,7 @@ router.post('/addCard', passport.authenticate('jwt', { session: false }), (req, 
 // @route POST /api/users/addBank
 // @desc Add Bank user bank account details
 // @access Private
-router.post('/addBank', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/addBank', (req, res) => {
     console.log(req.body);
     Profile.findOne({ user: req.user._id })
         .then(profile => {
@@ -405,7 +404,7 @@ router.post('/addBank', passport.authenticate('jwt', { session: false }), (req, 
 // @route POST /api/users/fundAccount
 // @desc Add funds to user account
 // @access Private
-router.post('/fundAccount', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.post('/fundAccount', (req, res) => {
     const publicKey = 'FLWPUBK-1a0620ce92aeed540c4de14424668caf-X';
     const secret = 'FLWSECK-4d3a45d7786963cbb688f9265b3eca67-X';
     const encryptionKey = '4d3a45d77869397ffdbb1b3b';
