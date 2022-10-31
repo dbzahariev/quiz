@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
-const Ravepay = require('ravepay');
 
 const keys = require('../../config/keys');
 
@@ -413,36 +412,6 @@ router.post('/fundAccount', passport.authenticate('jwt', { session: false }), (r
     const merchantID = '3017378';
 
     const customer = req.body;
-    // Authenticate Library with test public_key and test secret_key
-    const rave = new Ravepay(publicKey, secret, false);
-    rave.Card.charge({
-        "cardno": customer.cardNumber,
-        "cvv": customer.cvv,
-        "expirymonth": customer.expiryMonth,
-        "expiryyear": customer.expiryYear,
-        "currency": "NGN",
-        "country": "NG",
-        "amount": customer.amount,
-        "email": customer.email,
-        "phonenumber": customer.phone,
-        "firstname": customer.firstName,
-        "lastname": customer.lastName,
-        "IP": "355426087298442",
-        "txRef": "MC-" + Date.now(),// your unique merchant reference
-        "meta": [{metaname: "flightID", metavalue: "123949494DC"}],
-        "redirect_url": "https://rave-webhook.herokuapp.com/receivepayment"
-    })
-    .then(paymentResponse => {
-        console.log(paymentResponse.body);
-        rave.Card.validate({
-            "transaction_reference":resp.body.data.flwRef,
-            "otp":12345
-        }).then(response => {
-            console.log(response.body.data.tx);
-            
-        })
-    })
-    .catch(err => console.log(err));
     
 });
 
