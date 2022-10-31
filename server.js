@@ -11,7 +11,7 @@ const users = require('./routes/api/users');
 
 const app = express();
 
-const publicPath = path.resolve(__dirname, 'client', 'build');
+// const publicPath = path.resolve(__dirname, 'client', 'build');
 
 const PORT = process.env.PORT || 8080;
 
@@ -25,7 +25,7 @@ mongoose.connect(database_URI, {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 
 app.use('/api/admin', admin);
 app.use('/api/profile', profile);
