@@ -6,7 +6,7 @@ const Quiz = require('../../models/Quiz');
 const validateAddQuestion = require('../../utils/validation/addQuestion');
 
 // Add new quiz question
-// @route POST /api/quizr
+// @route POST /api
 // @desc add question
 // @access Private
 router.post('/', (req, res) => {
@@ -34,11 +34,11 @@ router.post('/', (req, res) => {
 });
 
 // Gets free quiz questions
-// @route GET /api/quiz/getFreeQuiz
+// @route GET /api/getFreeQuiz
 // @desc get questions
 // @access Private
 router.get('/getFreeQuiz', (req, res) => {
-    Quiz.aggregate([{ $sample: { size: 15 } }])
+    Quiz.aggregate([{ $sample: { size: 15 } }, { $match: { delete: false } }])
         .exec((err, result) => {
             if (err) {
                 return console.log(err);
@@ -48,7 +48,7 @@ router.get('/getFreeQuiz', (req, res) => {
 });
 
 // Gets all quiz questions
-// @route GET /api/quiz/all
+// @route GET /api/all
 // @desc get questions
 // @access Private
 router.get('/all', (req, res) => {
@@ -59,7 +59,7 @@ router.get('/all', (req, res) => {
 });
 
 // Gets quiz questions
-// @route GET /api/quiz/category/:category
+// @route GET /api/category/:category
 // @desc get questions by category
 // @access Private
 router.get('/category/:quizCategory', (req, res) => {
@@ -69,7 +69,7 @@ router.get('/category/:quizCategory', (req, res) => {
 });
 
 // Update Quiz
-// @route PUT /api/quiz/updateQuestion/:id
+// @route PUT /api/updateQuestion/:id
 // @desc update quiz question by Id
 // @access Private
 router.put('/updateQuestion/:id', (req, res) => {
@@ -80,24 +80,15 @@ router.put('/updateQuestion/:id', (req, res) => {
     }
 
     const quiz = new Quiz({
-        type: req.body.type,
+        // type: req.body.type,
         question: req.body.question,
-        optionA: {
-            text: req.body.optionAText,
-            answer: req.body.optionAAnswer
-        },
-        optionB: {
-            text: req.body.optionBText,
-            answer: req.body.optionBAnswer
-        },
-        optionC: {
-            text: req.body.optionCText,
-            answer: req.body.optionCAnswer
-        },
-        optionD: {
-            text: req.body.optionDText,
-            answer: req.body.optionDAnswer
-        }
+        optionA: req.body.optionA,
+        optionB: req.body.optionB,
+        optionC: req.body.optionC,
+        optionD: req.body.optionD,
+        optionD: req.body.optionD,
+        answer: req.body.answer,
+        delete: req.body.delete || false,
     });
 
     Quiz.findOneAndDelete({ _id: req.params.id })
@@ -116,7 +107,7 @@ router.put('/updateQuestion/:id', (req, res) => {
 });
 
 // removes all quiz questions
-// @route DELETE /api/quiz/all
+// @route DELETE /api/all
 // @desc remove questions
 // @access Private
 router.delete('/all', (req, res) => {
@@ -126,7 +117,7 @@ router.delete('/all', (req, res) => {
 });
 
 // removes quiz question
-// @route DELETE /api/quiz/category/:category
+// @route DELETE /api/category/:category
 // @desc removes quiz questions by category
 // @access Private
 router.delete('/category/:quizCategory', (req, res) => {
@@ -136,7 +127,7 @@ router.delete('/category/:quizCategory', (req, res) => {
 });
 
 // removes quiz questions
-// @route DELETE /api/quiz/:id
+// @route DELETE /api/:id
 // @desc removes quiz question by id
 // @access Private
 router.delete('/:id', (req, res) => {

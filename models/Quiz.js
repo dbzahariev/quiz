@@ -40,6 +40,11 @@ const QuizSchema = new Schema({
     dateCreated: {
         type: Date,
         default: new Date()
+    },
+
+    delete: {
+        type: Boolean,
+        default: true
     }
 });
 
