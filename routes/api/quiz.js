@@ -28,7 +28,10 @@ router.post('/', (req, res) => {
     });
 
     quiz.save()
-        .then(quiz => res.json(quiz))
+        .then(quiz => {
+            console.log("Add question", quiz.question)
+            return res.json(quiz)
+        })
         .catch(err => console.log(err));
 });
 

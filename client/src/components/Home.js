@@ -32,7 +32,7 @@ class Home extends Component {
                         <div className="authContainer">
                             {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
                             {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
-                            {sessionStorage.getItem("adminPass") === "1" ?
+                            {localStorage.getItem("adminPass") === "1" ?
                                 <Link to="/addNewQuestion" className="authButtons" id="signupButton">Добави нов въпрос</Link> : <div></div>}
                         </div>
                     </section>

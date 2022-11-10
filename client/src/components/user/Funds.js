@@ -13,7 +13,7 @@ import FundsTextInput from '../input-groups/FundsTextInput';
 import Spinner from '../common/Spinner';
 
 class Funds extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             user: this.props.auth.user,
@@ -40,7 +40,7 @@ class Funds extends Component {
         };
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const sidenavElem = document.querySelectorAll('.sidenav');
         // eslint-disable-next-line
         const sidenavInstance = M.Sidenav.init(sidenavElem, {});
@@ -50,7 +50,7 @@ class Funds extends Component {
         const selectInstance = M.FormSelect.init(selectElement, {});
 
         const { state } = this;
-        
+
         if (state.bank === '' || state.accountNumber === '' || state.accountName === '') {
             this.setState({
                 showBankDetails: false
@@ -88,7 +88,7 @@ class Funds extends Component {
         this.setCardEnding();
     }
 
-    UNSAFE_componentWillReceiveProps (nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         if (nextProps.errors) {
             this.setState({
                 errors: nextProps.errors,
@@ -97,7 +97,7 @@ class Funds extends Component {
         }
 
         if (nextProps) {
-            console.log(nextProps);
+            // console.log(nextProps);
         }
         // if (nextProps.auth.user) {
         //     this.setState({
@@ -112,11 +112,11 @@ class Funds extends Component {
         // }
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         const sidenavElem = document.querySelectorAll('.sidenav');
         // eslint-disable-next-line
         const sidenavInstance = M.Sidenav.init(sidenavElem, {});
-        sidenavInstance[0].close();        
+        sidenavInstance[0].close();
     }
 
     greetUser = () => {
@@ -127,7 +127,7 @@ class Funds extends Component {
         } else if (hour >= 12 && hour < 16) {
             return `Good afternoon ${this.state.username}, so nice having you back.`;
         } else {
-            return  `Good evening ${this.state.username}, hope you had an awesome day?`;
+            return `Good evening ${this.state.username}, hope you had an awesome day?`;
         }
     }
 
@@ -160,7 +160,7 @@ class Funds extends Component {
                 });
                 break;
 
-            default: 
+            default:
                 break;
         }
     }
@@ -194,7 +194,7 @@ class Funds extends Component {
 
     handleFormSubmit = (e) => {
         e.preventDefault();
-        switch(e.target.id) {
+        switch (e.target.id) {
             case 'card-form':
                 const card = {
                     cardNumber: this.state.cardNumber,
@@ -236,7 +236,7 @@ class Funds extends Component {
         // const newCardEnding = cardEnding.join('');
     }
 
-    render () {
+    render() {
         const { state } = this;
         const { cardEnding, color, errors, user } = this.state;
         return (
@@ -272,7 +272,7 @@ class Funds extends Component {
                                         </p>
                                         <h5 style={{ textTransform: 'capitalize' }}>{user.firstName} {user.lastName}</h5>
                                     </div>
-                                    <li className="divider"></li>  
+                                    <li className="divider"></li>
                                     <li><Link to="/dashboard"><span className="mdi mdi-view-dashboard-outline link-icon mdi-24px"></span>Dashboard</Link></li>
                                     <li><Link to="/myGames"><span className="mdi mdi-cube-outline link-icon mdi-24px"></span>My Games</Link></li>
                                     <li><Link to="/profile"><span className="mdi mdi-settings link-icon mdi-24px"></span>Profile</Link></li>
@@ -296,7 +296,7 @@ class Funds extends Component {
                         </div>
                         <section className="main-content">
                             <div className="funds-content">
-                                <div className={classnames('funds-info', { 'hide': state.showCardDetails === false})}>
+                                <div className={classnames('funds-info', { 'hide': state.showCardDetails === false })}>
                                     <div>
                                         <p>This account is currently funded by</p>
                                         <p>XXXX-XXXX-XXXX-{cardEnding}</p>
@@ -348,7 +348,7 @@ class Funds extends Component {
                                         />
                                     </div>
                                     <div className="row">
-                                        <Dropdown 
+                                        <Dropdown
                                             id="bank"
                                             name="bank"
                                             value={state.bank}

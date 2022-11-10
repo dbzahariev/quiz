@@ -471,7 +471,10 @@ class Play extends Component {
 
         return (
             <div id="quiz">
-                <h3>Куиз</h3>
+                <h3 style={{
+                    paddingTop: "30px",
+                    paddingLeft: "10px",
+                }}>Куиз</h3>
                 {/* {this.state.type ? <h3>Категория: {this.state.type}</h3> : <span>Няма зададена категория</span>} */}
                 {quizContent}
             </div>
