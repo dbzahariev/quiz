@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const path = require("path");
 
 const app = express();
+const cors = require('cors')
 const PORT = process.env.PORT || 8080; // Step 1
 
 const routes = require("./routes/api/quiz");
@@ -30,6 +31,7 @@ mongoose.connection.on("connected", () => {
     console.log("Mongoose is connected!!!!");
 });
 
+app.use(cors())
 // Data parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
