@@ -54,8 +54,18 @@ router.get('/getFreeQuiz', (req, res) => {
 // @desc get questions
 // @access Private
 router.get('/all', (req, res) => {
-    Quiz.find()
+    Quiz.find({ delete: false })
         .then(quizzess => res.json(quizzess))
+        .catch(err => console.log(err));
+});
+
+// Gets all quiz questions
+// @route GET /api/allCount
+// @desc get questions
+// @access Private
+router.get('/allCount', (req, res) => {
+    Quiz.find({ delete: false })
+        .then(quizzess => res.json(quizzess.length))
         .catch(err => console.log(err));
 });
 
