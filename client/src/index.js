@@ -6,5 +6,8 @@ import '../node_modules/materialize-css/dist/js/materialize.min.js';
 import '../node_modules/materialize-css/dist/css/materialize.min.css';
 import App from './App';
 import './app.scss';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'https://quiz-hnnb.onrender.com';
 
 ReactDOM.render(<App />, document.getElementById('root'));
