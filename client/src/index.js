@@ -8,6 +8,6 @@ import App from './App';
 import './app.scss';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://quiz-hnnb.onrender.com';
+axios.defaults.baseURL = process.env.BASE_URL;
 
 ReactDOM.render(<App />, document.getElementById('root'));
