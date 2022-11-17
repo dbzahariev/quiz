@@ -35,18 +35,27 @@ router.post('/', (req, res) => {
         .catch(err => console.log(err));
 });
 
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array
+}
+
 // Gets free quiz questions
 // @route GET /api/getFreeQuiz
 // @desc get questions
 // @access Private
 router.get('/getFreeQuiz', (req, res) => {
-    Quiz.aggregate([{ $sample: { size: 15 } }, { $match: { delete: false } }])
-        .exec((err, result) => {
-            if (err) {
-                return console.log(err);
-            }
-            res.json(result);
-        });
+    Quiz.find({ delete: false })
+        .then(quizzess => {
+            let newQuestionsArr = shuffleArray(quizzess).slice(0, Math.min(quizzess.length, 15))
+            if (newQuestionsArr.length === 0) newQuestionsArr = [{}]
+            return res.json(newQuestionsArr)
+        })
+        // .then(quizzess => res.json([{}]))
+        .catch(err => console.log(err));
 });
 
 // Gets all quiz questions
@@ -110,11 +119,17 @@ router.put('/updateQuestion/:id', (req, res) => {
             }
             quiz.save()
                 .then(() => {
-                    res.json({ message: 'Question updated successfully!' });
+                    res.json({ message: 'Question updated successfully!', newId: quiz._id });
                 })
-                .catch(err => console.log(err));
+                .catch(err => {
+                    console.log(err)
+                    return res.status(400).json(err);
+                });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err)
+            return res.status(400).json(err);
+        });
 });
 
 // removes all quiz questions

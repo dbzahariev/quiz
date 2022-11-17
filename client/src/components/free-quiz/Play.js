@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import M from 'materialize-css';
 import classnames from 'classnames';
 import { Helmet } from 'react-helmet';
+import axios from 'axios'
 
 import Loader from '../common/Loader';
 
@@ -267,12 +268,33 @@ class Play extends Component {
         });
     };
 
+    deleteQuestion = () => {
+        let newQuest = {
+            question: this.state.currentQuestion.question,
+            optionA: this.state.currentQuestion.optionA,
+            optionB: this.state.currentQuestion.optionB,
+            optionC: this.state.currentQuestion.optionC,
+            optionD: this.state.currentQuestion.optionD,
+            answer: this.state.currentQuestion.answer,
+            delete: true
+        }
+
+        axios.put(`/api/updateQuestion/${this.state.currentQuestion._id}`, newQuest)
+            .then(res => {
+                console.log(res.data.message)
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
     correctAnswer = () => {
         M.toast({
             html: 'Верен отговор!',
             classes: 'toast-valid',
             displayLength: 1500
         });
+        this.deleteQuestion()
         this.setState((prevState) => ({
             score: prevState.score + 1,
             correctAnswers: prevState.correctAnswers + 1,
