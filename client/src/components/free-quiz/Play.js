@@ -476,15 +476,21 @@ class Play extends Component {
                             </button>
                         </p>
 
-                        <h5>{currentQuestion.question}</h5>
-                        <div className="option-container">
-                            <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionA}</p>
-                            <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionB}</p>
-                        </div>
-                        <div className="option-container">
-                            <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionC}</p>
-                            <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionD}</p>
-                        </div>
+                        {this.state.pauseTtiger ?
+                            <div>
+                                <h5>Пауза</h5>
+                            </div> :
+                            <>
+                                <h5>{currentQuestion.question}</h5>
+                                <div className="option-container">
+                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionA}</p>
+                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionB}</p>
+                                </div>
+                                <div className="option-container">
+                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionC}</p>
+                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionD}</p>
+                                </div>
+                            </>}
                     </div>
 
                     <div className="buttonContainer">
