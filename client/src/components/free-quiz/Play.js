@@ -40,9 +40,13 @@ class Play extends Component {
             previousButtonDisabled: true,
             nextButtonDisabled: false,
             previousRandomNumbers: [],
-            time: {}
+            time: {},
+            pauseTime: 0,
+            pauseTtiger: false
         };
         this.interval = null
+        this.intervalPause = null
+        this.pause = this.pause.bind(this)
     }
 
     componentDidMount() {
@@ -55,6 +59,7 @@ class Play extends Component {
 
     componentWillUnmount() {
         clearInterval(this.interval);
+        clearInterval(this.intervalPause);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) {
@@ -350,7 +355,7 @@ class Play extends Component {
         const countDownTime = Date.now() + 1800000;
         this.interval = setInterval(() => {
             const now = new Date();
-            const distance = countDownTime - now;
+            const distance = (countDownTime - now) + this.state.pauseTime * 1000;
 
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
@@ -381,6 +386,27 @@ class Play extends Component {
 
     playButtonSound = () => {
         document.getElementById('button-sound').play();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.pauseTtiger !== this.state.pauseTtiger) {
+            let isPause = this.state.pauseTtiger
+            if (isPause) {
+                this.intervalPause = setInterval(() => {
+                    this.setState({
+                        ...this.state,
+                        pauseTime: this.state.pauseTime + 1
+                    })
+                }, 1000);
+            }
+            else {
+                clearInterval(this.intervalPause)
+            }
+        }
+    }
+
+    pause() {
+        this.setState({ pauseTtiger: !this.state.pauseTtiger })
     }
 
     render() {
@@ -436,18 +462,20 @@ class Play extends Component {
                             </p>
                             {/* Hints end */}
                         </div>
+
                         <p>
                             {/* Number Question start */}
                             <span>{this.state.currentQuestionIndex + 1} от {this.state.numberOfQuestions}</span>
                             {/* Number Question end */}
-                            <span className={classnames('right valid', {
+                            <button style={{ border: "0px", backgroundColor: "#f8f8f8" }} className={classnames('right valid', {
                                 'warning': time.distance <= 120000,
                                 'invalid': time.distance < 30000
-                            })}>
+                            })} onClick={this.pause}>
                                 <span className="mdi mdi-clock-outline mdi-24px" style={{ position: 'relative', top: '2px' }}></span>
                                 {time.minutes}:{time.seconds}
-                            </span>
+                            </button>
                         </p>
+
                         <h5>{currentQuestion.question}</h5>
                         <div className="option-container">
                             <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionA}</p>
