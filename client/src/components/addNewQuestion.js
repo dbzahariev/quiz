@@ -12,13 +12,17 @@ class AddNewQuestion extends Component {
       optionC: "А3",
       optionD: "А4",
       answer: "А2",
-      manyQuestions: "many Questions"
+      questionRowText: "many Questions",
+      manyQuestionsRowText: "",
+      allQuestions: []
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeManyQuestions = this.handleChangeManyQuestions.bind(this);
+    this.handleChangeManyQuestions2 = this.handleChangeManyQuestions2.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.clearState = this.clearState.bind(this);
+    this.prepareManyQuestions = this.prepareManyQuestions.bind(this);
   }
 
   componentDidMount() {
@@ -33,7 +37,7 @@ class AddNewQuestion extends Component {
       optionC: "",
       optionD: "",
       answer: "",
-      manyQuestions: ""
+      questionRowText: ""
     });
   }
 
@@ -44,10 +48,17 @@ class AddNewQuestion extends Component {
     });
   }
 
+  handleChangeManyQuestions2(event) {
+    let newValue = event.target.value;
+    this.setState({
+      manyQuestionsRowText: newValue
+    });
+  }
+
   handleChangeManyQuestions(event) {
     let newValue = event.target.value;
     this.setState({
-      "manyQuestions": newValue
+      questionRowText: newValue
     });
     let questionn = {
       question: "",
@@ -108,16 +119,10 @@ class AddNewQuestion extends Component {
     return result
   }
 
-  handleSubmit(event) {
-    console.log(this.state)
-
-    if (this.state === undefined) {
-      return
-    }
-
+  sendOneQuestToDb(quest) {
     axios({
       method: "POST",
-      data: this.state,
+      data: quest,
       withCredentials: true,
       url: `/api`,
     })
@@ -130,6 +135,77 @@ class AddNewQuestion extends Component {
         console.error(err);
         return console.error(err);
       });
+  }
+
+  prepareManyQuestions() {
+    console.log(this.state)
+    let allQuestionsRowText = this.state.manyQuestionsRowText.split('\n')
+    let allQuestionsArr = []
+
+
+    // question: string;
+    // optionA: string;
+    // optionB: string;
+    // optionC: string;
+    // optionD: string;
+    // answer: string;
+    let oneQuestion = {
+      question: "",
+      optionA: "",
+      optionB: "",
+      optionC: "",
+      optionD: "",
+      answer: ""
+    }
+    for (let i = 0; i <= allQuestionsRowText.length; i++) {
+      let gg = allQuestionsRowText[i]
+      let ffvv = i % 6
+      if (ffvv === 0) {
+        oneQuestion.question = gg
+      } else if (ffvv === 1) {
+        oneQuestion.optionA = gg
+      } else if (ffvv === 2) {
+        oneQuestion.optionB = gg
+      } else if (ffvv === 3) {
+        oneQuestion.optionC = gg
+      } else if (ffvv === 4) {
+        let arr = gg.split(";")
+        oneQuestion.optionD = arr[0]
+        if (arr[1] === "a") {
+          oneQuestion.answer = oneQuestion.optionA
+        } else if (arr[1] === "b") {
+          oneQuestion.answer = oneQuestion.optionB
+        } else if (arr[1] === "c") {
+          oneQuestion.answer = oneQuestion.optionC
+        } else if (arr[1] === "d") {
+          oneQuestion.answer = oneQuestion.optionD
+        } else {
+
+        }
+      } else {
+        allQuestionsArr.push({ ...oneQuestion })
+      }
+    }
+    this.setState({ allQuestions: allQuestionsArr })
+    return allQuestionsArr
+  }
+
+  handleSubmit(event) {
+    console.log(this.state)
+
+    if (this.state === undefined) {
+      return
+    }
+
+    if (this.state.question !== "") {
+      this.sendOneQuestToDb(this.state)
+    } else {
+      let foo = this.prepareManyQuestions()
+      foo.forEach(element => {
+        this.sendOneQuestToDb(element)
+      });
+    }
+
     event.preventDefault();
   }
 
@@ -215,7 +291,12 @@ class AddNewQuestion extends Component {
 
           <div className="form-group">
             <label>Example select</label>
-            <textarea rows={5} cols={5} value={this.state.manyQuestions} name="manyQuestions" onChange={this.handleChangeManyQuestions} />
+            <textarea id="oneQuest" rows={5} cols={5} value={this.state.questionRowText} name="manyQuestions" onChange={this.handleChangeManyQuestions} />
+          </div>
+
+          <div className="form-group">
+            <label>Example select</label>
+            <textarea id="manyQuest" rows={5} cols={5} value={this.state.manyQuestionsRowText} name="manyQuestions" onChange={this.handleChangeManyQuestions2} />
           </div>
 
           <div className="row">
