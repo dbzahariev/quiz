@@ -8,6 +8,6 @@ import App from './App';
 import './app.scss';
 import axios from 'axios';
 
-axios.defaults.baseURL = process.env.BASE_URL;
+axios.defaults.baseURL = "https://http-nodejs-production-c2b5.up.railway.app";
 
 ReactDOM.render(<App />, document.getElementById('root'));
