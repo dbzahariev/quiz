@@ -510,7 +510,7 @@ class Play extends Component {
                                 style={{ marginLeft: '5px' }}
                                 className="mdi mdi-chevron-double-right right">
                             </span>
-                            Следващт
+                            Следващ
                         </button>
                         <button
                             onClick={this.hadleQuitButtonClick}>
