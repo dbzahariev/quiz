@@ -123,7 +123,6 @@ class AddNewQuestion extends Component {
     axios({
       method: "POST",
       data: quest,
-      withCredentials: true,
       url: `/api`,
     })
       .then((res) => {
