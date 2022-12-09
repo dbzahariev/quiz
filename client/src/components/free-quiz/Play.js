@@ -16,6 +16,7 @@ import isEmpty from '../../validation/is-empty';
 import correctNotification from '../../assets/audio/correct-answer.mp3';
 import wrongNotification from '../../assets/audio/wrong-answer.mp3';
 import buttonSound from '../../assets/audio/button-sound.mp3';
+import ShowPictures from '../showPictures';
 
 class Play extends Component {
     constructor(props) {
@@ -462,7 +463,6 @@ class Play extends Component {
                             </p>
                             {/* Hints end */}
                         </div>
-
                         <p>
                             {/* Number Question start */}
                             <span>{this.state.currentQuestionIndex + 1} от {this.state.numberOfQuestions}</span>
@@ -481,6 +481,7 @@ class Play extends Component {
                                 <h5>Пауза</h5>
                             </div> :
                             <>
+                                {currentQuestion.question !== undefined ? <ShowPictures question={currentQuestion} /> : <></>}
                                 <h5>{currentQuestion.question}</h5>
                                 <div className="option-container">
                                     <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionA}</p>
