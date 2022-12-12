@@ -15,8 +15,8 @@ import isEmpty from '../../validation/is-empty';
 
 import correctNotification from '../../assets/audio/correct-answer.mp3';
 import wrongNotification from '../../assets/audio/wrong-answer.mp3';
-import buttonSound from '../../assets/audio/button-sound.mp3';
 import ShowPictures from '../showPictures';
+import ExitBtn from "../exitbtn"
 
 class Play extends Component {
     constructor(props) {
@@ -164,13 +164,6 @@ class Play extends Component {
                     this.displayQuestion(this.state.questions, this.state.currentQuestion, this.state.nextQuestion, this.state.previousQuestion);
                 });
             }
-        }
-    }
-
-    hadleQuitButtonClick = (e) => {
-        this.playButtonSound();
-        if (window.confirm('Сигурен ли си, че искаш да излезеш от куиза?')) {
-            this.props.history.push('/');
         }
     }
 
@@ -424,7 +417,6 @@ class Play extends Component {
                     <Fragment>
                         <audio id="correct-audio" src={correctNotification}></audio>
                         <audio id="wrong-audio" src={wrongNotification}></audio>
-                        <audio id="button-sound" src={buttonSound}></audio>
                     </Fragment>
                     <div className="question">
                         <div className="lifeline-container">
@@ -513,14 +505,7 @@ class Play extends Component {
                             </span>
                             Следващ
                         </button>
-                        <button
-                            onClick={this.hadleQuitButtonClick}>
-                            <span
-                                style={{ marginLeft: '5px' }}
-                                className="mdi mdi-close right">
-                            </span>
-                            Изход
-                        </button>
+                        <ExitBtn />
                     </div>
                 </Fragment>
             );

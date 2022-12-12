@@ -25,7 +25,7 @@ class Home extends Component {
                         <div className="playButtonContainer">
                             <ul>
                                 <li>
-                                    <Link className="playButton" to="/play">Нова игра</Link>
+                                    <Link className="playButton" to="/play">Нов Куиз</Link>
                                 </li>
                             </ul>
                         </div>
@@ -34,6 +34,9 @@ class Home extends Component {
                             {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
                             {localStorage.getItem("adminPass") === "1" ?
                                 <Link to="/addNewQuestion" className="authButtons" id="signupButton">Добави нов въпрос</Link> : <div></div>}
+                        </div>
+                        <div className='gamesContainer'>
+                            <Link to="/gameColorCheck">Играй провери цвета</Link>
                         </div>
                     </section>
                 </div>

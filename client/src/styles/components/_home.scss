@@ -19,7 +19,7 @@
         padding-left: $md;
         padding-right: $md;
     }
-    
+
     .cube {
         font-size: 8rem;
         color: $orange;
@@ -33,32 +33,46 @@
     .playButtonContainer {
         width: 100%;
     }
-    
+
     a.playButton {
         background-color: $green;
         border: none;
         border-radius: $button-radius;
-        color: #fff;
+        color: $color-text-white;
         cursor: pointer;
         display: block;
         padding: $normal;
         transition: 0.3s linear all;
         text-align: center;
     }
-    
+
     .playButton:hover {
         background-color: darken($green, 10%);
         box-shadow: $shadow;
     }
-    
+
     .authContainer {
         width: 100%;
         display: flex;
         justify-content: space-between;
     }
-    
+
+    .gamesContainer {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .gamesContainer>a {
+        padding: 10px;
+        background-color: $blue;
+        color: $color-text-white;
+        border-radius: $button-radius;
+    }
+
     .authContainer .authButtons {
-        color: #fff;
+        color: $color-text-white;
         cursor: pointer;
         border-radius: $button-radius;
         margin-top: $md;
@@ -67,18 +81,20 @@
         width: 45%;
         transition: 0.3s linear all;
     }
-    
+
     #loginButton {
         background-color: $red;
     }
+
     #loginButton:hover {
         background-color: darken($red, 10%);
         box-shadow: $shadow;
     }
-    
+
     #signupButton {
         background-color: $blue;
     }
+
     #signupButton:hover {
         background-color: darken($blue, 10%);
         box-shadow: $shadow;

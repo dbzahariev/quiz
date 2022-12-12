@@ -18,6 +18,7 @@ import Profile from './components/user/Profile';
 import Games from './components/user/Games';
 import Funds from './components/user/Funds';
 import Support from './components/user/Support';
+import GameColorcheck from "./components/games/GameColorcheck"
 
 import PrivateRoute from './components/common/PrivateRoute';
 
@@ -56,6 +57,7 @@ class App extends Component {
 							<Route path="/play/instructions" exact component={FreeGameInstructions} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
 							<Route path="/addNewQuestion" exact component={AddNewQuestion} />
+							<Route path="/gameColorCheck" exact component={GameColorcheck} />
 							<Switch>
 								<PrivateRoute path="/dashboard" exact component={Dashboard} />
 							</Switch>

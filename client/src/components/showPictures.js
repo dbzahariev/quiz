@@ -8,14 +8,6 @@ class ShowPictures extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      score: 0,
-      type: '',
-      numberOfQuestions: 0,
-      numberOfAnsweredQuestions: 0,
-      correctAnswers: 0,
-      wrongAnswers: 0,
-      usedHints: 0,
-      usedfiftyFifty: 0,
       transform: "scale(1)"
     };
     this.toBigImg = this.toBigImg.bind(this)
