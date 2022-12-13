@@ -26,6 +26,9 @@ router.post('/', (req, res) => {
         answer: req.body.answer,
         delete: false
     });
+    if (req.body.image) {
+        quiz.image = req.body.image
+    }
 
     quiz.save()
         .then(quiz => {

@@ -42,6 +42,10 @@ const QuizSchema = new Schema({
         default: new Date()
     },
 
+    image: {
+        type: String,
+    },
+
     delete: {
         type: Boolean,
         default: true
