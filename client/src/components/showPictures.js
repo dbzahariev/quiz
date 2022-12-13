@@ -43,9 +43,9 @@ class ShowPictures extends Component {
       display: "flex", justifyContent: "center", transition: "transform 0.25s",
       transform: this.state.transform,
     }}>
-      {this.props.question.img !== undefined ?
+      {this.props.question.image !== undefined ?
         <div style={{ height: "300px", display: "flex", justifyContent: "center", marginBottom: "3%", }}>
-          <img id="img1" onClick={this.toBigImg} style={{ height: "100%", cursor: "pointer", border: "1px solid black" }} src={this.props.question.img} alt="pictures"></img>
+          <img id="img1" onClick={this.toBigImg} style={{ height: "100%", cursor: "pointer", border: "1px solid black" }} src={this.props.question.image} alt="pictures"></img>
         </div>
         : <></>}
     </div>
