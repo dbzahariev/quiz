@@ -112,10 +112,6 @@
   background-color: #b77c;
 }
 
-.startBtn {
-  height: 20px;
-}
-
 #startBtn {
   padding: 4px 8px;
   background-color: #ebe5e5;
@@ -125,4 +121,36 @@
 .clicked {
   transform: scale(0.8);
   transition-duration: 0.2s;
+}
+
+.hard-mode-container {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.hard-mode-container>p {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.hard-mode {
+  padding-top: 8px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hard-mode>button {
+  width: 30px;
+  height: 30px;
+  background-color: #9effa3;
+  border-radius: 50%;
+  border: none;
+}
+
+.hard-mode>button:focus {
+  background-color: #9effa3;
 }
