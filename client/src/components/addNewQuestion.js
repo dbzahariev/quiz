@@ -1,153 +1,87 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+// eslint-disable-next-line
+import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import axios from "axios";
 
-class AddNewQuestion extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      question: 'Въпрос 111',
-      optionA: "А1",
-      optionB: "А2",
-      optionC: "А3",
-      optionD: "А4",
-      answer: "А2",
-      questionRowText: "many Questions",
-      manyQuestionsRowText: "",
-      allQuestions: []
-    };
+function AddNewQuestion({ name }) {
+  const [state, setState] = useState({
+    question: "",
+    optionA: "",
+    optionB: "",
+    optionC: "",
+    optionD: "",
+    answer: "",
+    questionRowText: "",
+    manyQuestionsRowText: ""
+  })
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleChangeManyQuestions = this.handleChangeManyQuestions.bind(this);
-    this.handleChangeManyQuestions2 = this.handleChangeManyQuestions2.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.clearState = this.clearState.bind(this);
-    this.prepareManyQuestions = this.prepareManyQuestions.bind(this);
-  }
-
-  componentDidMount() {
-    this.clearState()
-  }
-
-  clearState() {
-    this.setState({
-      question: "",
-      optionA: "",
-      optionB: "",
-      optionC: "",
-      optionD: "",
-      answer: "",
-      questionRowText: ""
-    });
-  }
-
-  handleChange(event, type) {
-    const target = event.target;
-    this.setState({
-      [target.name]: target.value
-    });
-  }
-
-  handleChangeManyQuestions2(event) {
-    let newValue = event.target.value;
-    this.setState({
-      manyQuestionsRowText: newValue
-    });
-  }
-
-  handleChangeManyQuestions(event) {
-    let newValue = event.target.value;
-    this.setState({
-      questionRowText: newValue
-    });
-    let questionn = {
-      question: "",
-      optionA: "",
-      optionB: "",
-      optionC: "",
-      optionD: "",
-      answer: "",
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (state.question !== "") {
+      sendOneQuestToDb(state)
+    } else {
+      prepManyquestion222();
     }
+  }
 
-    if (newValue.indexOf("\n")) {
-      newValue = newValue.split("\n")[0]
-    }
+  const prepManyquestion222 = async () => {
+    let foo = prepareManyQuestions();
 
-    if (newValue.indexOf("/") === -1) return
-    let arr = newValue.split("/")
-    if (newValue.indexOf(";") === -1) return
-    let answer2 = this.fixAnswerFromMany(newValue.split(";")[1].toString())
-    let arr2 = []
+    // eslint-disable-next-line
+    for (let element of foo) {
+      let imgIndex = element.question.indexOf("img")
 
-    for (let i = 0; i < arr.length; i++) {
-      let optionFromText = arr[i].split("\\")
-      if (i === 1) {
-        if (optionFromText[3].indexOf(";") > -1) {
-          optionFromText[3] = optionFromText[3].split(";")[0]
-        }
+      if (imgIndex === -1) {
+      } else {
+        element.question = element.question.slice(5)
+        element.image = "Insert"
       }
-      arr2.push(optionFromText)
+      sendOneQuestToDb(element)
+      // if (element.question.indexOf("img")) {
+      //   debugger
+      //   let kk 
+      //   element.imgage = ""
+      // }
+      // 
     }
-
-    console.log("b", arr2.length)
-    if (arr2 === 1) return
-
-    questionn.question = arr2[0][0] || ""
-    questionn.optionA = arr2[1][0] || ""
-    questionn.optionB = arr2[1][1] || ""
-    questionn.optionC = arr2[1][2] || ""
-    questionn.optionD = arr2[1][3] || ""
-    questionn.answer = this.returnSelectedAns(answer2, questionn)
-
-    this.setState(questionn)
   }
 
-  fixAnswerFromMany(option) {
-    let result = ""
-    if (option === "А" || option === "а" || option === "a") {
-      result = "A"
-    }
-    if (option === "Б" || option === "б" || option === "b") {
-      result = "B"
-    }
-    if (option === "В" || option === "в" || option === "c") {
-      result = "C"
-    }
-    if (option === "Г" || option === "г" || option === "d") {
-      result = "D"
-    }
-    return result
-  }
-
-  sendOneQuestToDb(quest) {
-    axios({
+  // eslint-disable-next-line
+  const sendOneQuestToDb = async (quest) => {
+    return await axios({
       method: "POST",
       data: quest,
       url: `/api`,
-    })
-      .then((res) => {
-        alert("Успях")
-        this.clearState()
-      })
-      .catch((err) => {
-        alert("Грешка")
-        console.error(err);
-        return console.error(err);
-      });
+    }).then((res) => {
+      console.log(res.data)
+      clearState()
+      return res
+    }).catch((err) => {
+      alert("Грешка")
+      console.error(err);
+      return console.error(err);
+    });
   }
 
-  prepareManyQuestions() {
-    console.log(this.state)
-    let allQuestionsRowText = this.state.manyQuestionsRowText.split('\n')
+  const clearState = () => {
+    let foo = {
+      ...state,
+      question: "",
+      optionA: "",
+      optionB: "",
+      optionC: "",
+      optionD: "",
+      answer: "",
+      questionRowText: "",
+      manyQuestionsRowText: ""
+    }
+    setState(foo);
+  }
+
+  const prepareManyQuestions = () => {
+    let allQuestionsRowText = state.manyQuestionsRowText.split('\n')
     let allQuestionsArr = []
 
-
-    // question: string;
-    // optionA: string;
-    // optionB: string;
-    // optionC: string;
-    // optionD: string;
-    // answer: string;
     let oneQuestion = {
       question: "",
       optionA: "",
@@ -185,101 +119,176 @@ class AddNewQuestion extends Component {
         allQuestionsArr.push({ ...oneQuestion })
       }
     }
-    this.setState({ allQuestions: allQuestionsArr })
+    setState({
+      ...state,
+      allQuestions: allQuestionsArr
+    })
     return allQuestionsArr
   }
 
-  handleSubmit(event) {
-    console.log(this.state)
 
-    if (this.state === undefined) {
-      return
-    }
+  const handleChange = (event, type) => {
+    const target = event.target;
 
-    if (this.state.question !== "") {
-      this.sendOneQuestToDb(this.state)
-    } else {
-      let foo = this.prepareManyQuestions()
-      foo.forEach(element => {
-        this.sendOneQuestToDb(element)
-      });
-    }
-
-    event.preventDefault();
+    setState({
+      ...state,
+      [target.name]: target.value
+    });
   }
 
-  returnSelectedAns(option, question = false) {
+  const returnSelectedAns = (option, question = false) => {
     let result = ""
     if (option === "A") {
-      result = question?.optionA || this.state.optionA
+      result = question?.optionA || state.optionA
     }
     if (option === "B") {
-      result = question?.optionB || this.state.optionB
+      result = question?.optionB || state.optionB
     }
     if (option === "C") {
-      result = question?.optionC || this.state.optionC
+      result = question?.optionC || state.optionC
     }
     if (option === "D") {
-      result = question?.optionD || this.state.optionD
+      result = question?.optionD || state.optionD
     }
     return result
   }
 
-  setUserChoice(select) {
-    this.setState({
-      answer: this.returnSelectedAns(select.target.value),
+  const setUserChoice = (select) => {
+    setState({
+      ...state,
+      answer: returnSelectedAns(select.target.value),
     });
   }
 
-  render() {
-    return (
-      <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }} onSubmit={this.handleSubmit}>
+
+  const handleChangeManyQuestions2 = (event) => {
+    let newValue = event.target.value;
+    setState({
+      ...state,
+      manyQuestionsRowText: newValue
+    });
+  }
+
+  const handleChangeManyQuestions = (event) => {
+    let newValue = event.target.value;
+    setState({
+      ...state,
+      questionRowText: newValue
+    });
+    let questionn = {
+      question: "",
+      optionA: "",
+      optionB: "",
+      optionC: "",
+      optionD: "",
+      answer: "",
+    }
+
+    if (newValue.indexOf("\n")) {
+      newValue = newValue.split("\n")[0]
+    }
+
+    if (newValue.indexOf("/") === -1) return
+    let arr = newValue.split("/")
+    if (newValue.indexOf(";") === -1) return
+    let answer2 = fixAnswerFromMany(newValue.split(";")[1].toString())
+    let arr2 = []
+
+    for (let i = 0; i < arr.length; i++) {
+      let optionFromText = arr[i].split("\\")
+      if (i === 1) {
+        if (optionFromText[3].indexOf(";") > -1) {
+          optionFromText[3] = optionFromText[3].split(";")[0]
+        }
+      }
+      arr2.push(optionFromText)
+    }
+
+    console.log("b", arr2.length)
+    if (arr2 === 1) return
+
+    questionn.question = arr2[0][0] || ""
+    questionn.optionA = arr2[1][0] || ""
+    questionn.optionB = arr2[1][1] || ""
+    questionn.optionC = arr2[1][2] || ""
+    questionn.optionD = arr2[1][3] || ""
+    questionn.answer = returnSelectedAns(answer2, questionn)
+
+    setState({
+      ...state,
+      ...questionn
+    })
+  }
+
+  const fixAnswerFromMany = (option) => {
+    let result = ""
+    if (option === "А" || option === "а" || option === "a") {
+      result = "A"
+    }
+    if (option === "Б" || option === "б" || option === "b") {
+      result = "B"
+    }
+    if (option === "В" || option === "в" || option === "c") {
+      result = "C"
+    }
+    if (option === "Г" || option === "г" || option === "d") {
+      result = "D"
+    }
+    return result
+  }
+
+
+  return (
+    <>
+      <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
+        onSubmit={handleSubmit}
+      >
         <div className="container" style={{ width: "100%" }}>
           <div className="row">
             <label>
               Въпрос:
-              <input className='form-control' name="question" type="text" value={this.state.question} onChange={this.handleChange} />
+              <input className='form-control' name="question" type="text" value={state.question} onChange={handleChange} />
             </label>
           </div>
 
           <div className="row">
             <label>
               Отговор A:
-              <input className='form-control' name="optionA" type="text" value={this.state.optionA} onChange={this.handleChange} />
+              <input className='form-control' name="optionA" type="text" value={state.optionA} onChange={handleChange} />
             </label>
           </div>
 
           <div className="row">
             <label>
               Отговор B:
-              <input className='form-control' name="optionB" type="text" value={this.state.optionB} onChange={this.handleChange} />
+              <input className='form-control' name="optionB" type="text" value={state.optionB} onChange={handleChange} />
             </label>
           </div>
 
           <div className="row">
             <label>
               Отговор C:
-              <input className='form-control' name="optionC" type="text" value={this.state.optionC} onChange={this.handleChange} />
+              <input className='form-control' name="optionC" type="text" value={state.optionC} onChange={handleChange} />
             </label>
           </div>
 
           <div className="row">
             <label>
               Отговор D:
-              <input className='form-control' name="optionD" type="text" value={this.state.optionD} onChange={this.handleChange} />
+              <input className='form-control' name="optionD" type="text" value={state.optionD} onChange={handleChange} />
             </label>
           </div>
 
           <div className="row">
             <label>
-              Верен отговор: {this.state.answer}
-              {/* <input className='form-control' name="answer" type="text" value={this.state.answer} onChange={this.handleChange} /> */}
+              Верен отговор: {state.answer}
+              {/* <input className='form-control' name="answer" type="text" value={state.answer} onChange={handleChange} /> */}
             </label>
           </div>
 
           <div className="form-group">
             <label>Example select</label>
-            <select onChange={(choice) => this.setUserChoice(choice)} className="form-control">
+            <select onChange={(choice) => setUserChoice(choice)} className="form-control">
               <option>Отговор</option>
               <option>A</option>
               <option>B</option>
@@ -290,12 +299,12 @@ class AddNewQuestion extends Component {
 
           <div className="form-group">
             <label>Example select</label>
-            <textarea id="oneQuest" rows={5} cols={5} value={this.state.questionRowText} name="manyQuestions" onChange={this.handleChangeManyQuestions} />
+            <textarea id="oneQuest" rows={5} cols={5} value={state.questionRowText} name="manyQuestions" onChange={handleChangeManyQuestions} />
           </div>
 
           <div className="form-group">
             <label>Example select</label>
-            <textarea id="manyQuest" rows={5} cols={5} value={this.state.manyQuestionsRowText} name="manyQuestions" onChange={this.handleChangeManyQuestions2} />
+            <textarea id="manyQuest" rows={5} cols={5} value={state.manyQuestionsRowText} name="manyQuestions" onChange={handleChangeManyQuestions2} />
           </div>
 
           <div className="row">
@@ -303,15 +312,12 @@ class AddNewQuestion extends Component {
           </div>
         </div>
       </form>
-    );
-  }
+    </>
+  )
 }
 
 AddNewQuestion.propTypes = {
-};
+  name: PropTypes.string.isRequired,
+}
 
-const mapStateToProps = (state) => ({
-  quiz: state.quiz
-});
-
-export default connect(mapStateToProps)(AddNewQuestion);
+export default AddNewQuestion

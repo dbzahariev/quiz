@@ -29,14 +29,14 @@ class Home extends Component {
                                 </li>
                             </ul>
                         </div>
-                        <div className="authContainer">
-                            {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
-                            {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
-                            {localStorage.getItem("adminPass") === "1" ?
-                                <Link to="/addNewQuestion" className="authButtons" id="signupButton">Добави нов въпрос</Link> : <div></div>}
-                        </div>
+                        {/* <div className="authContainer"> */}
+                        {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
+                        {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
+                        {/* </div> */}
                         <div className='gamesContainer'>
                             <Link to="/gameColorCheck">Играй провери цвета</Link>
+                            {localStorage.getItem("adminPass") === "1" ?
+                                <Link to="/addNewQuestion">Добави нов въпрос</Link> : <></>}
                         </div>
                     </section>
                 </div>
