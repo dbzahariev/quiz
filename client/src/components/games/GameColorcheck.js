@@ -43,7 +43,7 @@ class GameColorcheck extends Component {
   returnSelectedColorName = (mainColor) => {
     let kk = mainColor
     return `hsl(${kk}, 100%, ${kk === -1 ? 0 : kk === 0 ? 100 : 50}%)`
-    return colors.filter((el) => el.color === mainColor).slice()[0].name
+    // return colors.filter((el) => el.color === mainColor).slice()[0].name
   }
 
   returnSelectedColorLabel = (mainColor) => {

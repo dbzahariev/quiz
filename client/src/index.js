@@ -10,4 +10,8 @@ import axios from 'axios';
 
 axios.defaults.baseURL = "https://http-nodejs-production-c2b5.up.railway.app";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+  , document.getElementById('root'));
