@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import buttonSound from '../../assets/audio/button-sound.mp3';
 import ExitBtn from "../exitbtn"
+import LeaderBoard from './leaderBoard';
 
 const colors = [
   { name: "red", label: "Червено", color: 360 },
@@ -174,45 +175,50 @@ class GameColorcheck extends Component {
   render() {
     document.onkeyup = this.keyHandler
 
-    return <div className="games1">
-      <audio id="button-sound" src={buttonSound}></audio>
-      <div className="cont">
-        <div id="pgrBar" className="prgBar">
-          <div id="timeBar"></div>
-        </div>
-        <div id="display">
-          {/* <h1 id="colors"> </h1> */}
-          <h1 id="colors" style={{ color: this.returnSelectedColorName(this.state.colorText) }}>{this.returnSelectedColorLabel(this.state.colorName)}</h1>
-        </div>
-        <div id="score">
-          <div id="scr">{this.state.score}</div>
-        </div>
-        <div className="controls">
-          <button disabled={this.state.btnsDisabled} id={idButtons.corect} onClick={this.checkYes}>✓</button>
-          <button disabled={this.state.btnsDisabled} id={idButtons.wrong} onClick={this.checkNo}>✕</button>
-        </div>
-        <div className="startBtn">
-          <button id="startBtn" onClick={this.startGame}>Start</button>
-        </div>
+    return <>
+      <div className="full-game">
+        <LeaderBoard game="colorCheck" />
+        <div className="games1">
+          <audio id="button-sound" src={buttonSound}></audio>
+          <div className="cont">
+            <div id="pgrBar" className="prgBar">
+              <div id="timeBar"></div>
+            </div>
+            <div id="display">
+              {/* <h1 id="colors"> </h1> */}
+              <h1 id="colors" style={{ color: this.returnSelectedColorName(this.state.colorText) }}>{this.returnSelectedColorLabel(this.state.colorName)}</h1>
+            </div>
+            <div id="score">
+              <div id="scr">{this.state.score}</div>
+            </div>
+            <div className="controls">
+              <button disabled={this.state.btnsDisabled} id={idButtons.corect} onClick={this.checkYes}>✓</button>
+              <button disabled={this.state.btnsDisabled} id={idButtons.wrong} onClick={this.checkNo}>✕</button>
+            </div>
+            <div className="startBtn">
+              <button id="startBtn" onClick={this.startGame}>Start</button>
+            </div>
 
 
-        <div className="hard-mode-container">
-          <p>Трудност</p>
-          <div className="hard-mode">
-            <button style={this.styleButton(1)} onClick={() => this.changeMode(1)}>1</button>
-            <button style={this.styleButton(2)} onClick={() => this.changeMode(2)}>2</button>
-            <button style={this.styleButton(3)} onClick={() => this.changeMode(3)}>3</button>
-            <button style={this.styleButton(4)} onClick={() => this.changeMode(4)}>4</button>
-            <button style={this.styleButton(5)} onClick={() => this.changeMode(5)}>5</button>
+            <div className="hard-mode-container">
+              <p>Трудност</p>
+              <div className="hard-mode">
+                <button style={this.styleButton(1)} onClick={() => this.changeMode(1)}>1</button>
+                <button style={this.styleButton(2)} onClick={() => this.changeMode(2)}>2</button>
+                <button style={this.styleButton(3)} onClick={() => this.changeMode(3)}>3</button>
+                <button style={this.styleButton(4)} onClick={() => this.changeMode(4)}>4</button>
+                <button style={this.styleButton(5)} onClick={() => this.changeMode(5)}>5</button>
+              </div>
+            </div>
+
+
+            <div className='buttonContainer'>
+              <ExitBtn />
+            </div>
           </div>
         </div>
-
-
-        <div className='buttonContainer'>
-          <ExitBtn />
-        </div>
       </div>
-    </div>
+    </>
   }
 }
 

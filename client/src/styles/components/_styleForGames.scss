@@ -5,8 +5,62 @@
   /* background: rgb(248, 18, 18); */
 }
 
+.full-game {
+  background-color: blue;
+  display: flex;
+  flex-direction: row;
+}
+
+.leader-board {
+  width: 50vw;
+  height: 100vh;
+  background-color: green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.point-row {
+  border: 2px solid red;
+  display: flex;
+  flex-direction: row;
+  // align-self: flex-start;
+  // padding-left: 35%;
+}
+
+.point-row>p {
+  margin: 0;
+  padding: 0;
+  padding-left: 10px;
+}
+
+.point-score {
+  width: 8vw;
+  text-align: center;
+}
+
+div>div>div>div>ul>li>span>label {
+  display: none !important;
+}
+
+button.ant-btn.css-dev-only-do-not-override-26rdvq.ant-btn-link.ant-btn-sm {
+  display: none !important;
+}
+
+.ant-spin-container {
+  background-color: #fafafa;
+  border-radius: 2px;
+  padding-bottom: 2px;
+}
+
+#root>div.full-game>div.leader-board>div.ant-table-wrapper.css-dev-only-do-not-override-26rdvq>div>div>div>div>div>table>tbody>tr>td {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .games1 {
-  width: 100vw;
+  width: 50vw;
   height: 100vh;
   background-color: #000;
   display: grid;
