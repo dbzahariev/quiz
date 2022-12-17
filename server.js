@@ -8,7 +8,8 @@ const app = express();
 const cors = require('cors')
 const PORT = process.env.PORT || 8080; // Step 1
 
-const routes = require("./routes/api/quiz");
+const routesQuiz = require("./routes/api/quiz");
+const routesGamesDate = require("./routes/api/games");
 // const routesChat = require("./routes/chat");
 
 require("dotenv").config();
@@ -44,6 +45,7 @@ if (process.env.NODE_ENV === "production") {
 
 // HTTP request logger
 app.use(morgan("tiny"));
-app.use("/api/", routes);
+app.use("/api/", routesQuiz);
+app.use("/api/game/", routesGamesDate);
 
 app.listen(PORT, console.log(`Server is starting at ${PORT}`));
