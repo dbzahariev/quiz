@@ -66,10 +66,28 @@ router.post("/update", (req, res) => {
     return res.status(404).json({ msg: `Not found gameName (${data.gameName})` });
   }
 
+
+
   Games.find({
     nameHuman: data.nameHuman,
     gameName: data.gameName
   }).then((oneGame) => {
+    if (!oneGame[0]) {
+      const game = new Games({
+        nameHuman: req.body.nameHuman,
+        gameName: req.body.gameName,
+        points: [newPoint],
+      });
+
+      game.save()
+        .then(() => {
+          return res.status(201).json({ msg: "New user saved!" })
+        })
+        .catch(err => console.log(err));
+
+      return
+    }
+
     oneGame = oneGame[0]
     let id = oneGame._id;
 
@@ -78,7 +96,7 @@ router.post("/update", (req, res) => {
       return;
     }
 
-    let newId = (oneGame.points.sort((a, b) => b.id - a.id)[0].id || -1) + 1
+    let newId = ((oneGame.points.sort((a, b) => b.id - a.id)[0] || { id: -1 }).id) + 1
     oneGame.points.push({ ...newPoint, id: newId })
 
     let newPoints = oneGame.points
@@ -89,14 +107,17 @@ router.post("/update", (req, res) => {
       { _id: id },
       { points: newPoints },
       { useFindAndModify: false }
-    )
-      .then(() => {
-        return res.status(201).json({ msg: "Bet is saved successfully!" });
-      })
-      .catch(() => {
-        return res.status(500);
-      });
+    ).then(() => {
+      return res.status(201).json({ msg: "Bet is saved successfully!" });
+    }).catch(() => {
+      return res.status(500);
+    });
   })
+    .catch((el) => {
+      console.log("err", el)
+      res.status(500)
+      return
+    })
 });
 
 module.exports = router;
