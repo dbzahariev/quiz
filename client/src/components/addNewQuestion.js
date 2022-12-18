@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import axios from "axios";
 
@@ -37,16 +36,9 @@ function AddNewQuestion({ name }) {
         element.image = "Insert"
       }
       sendOneQuestToDb(element)
-      // if (element.question.indexOf("img")) {
-      //   debugger
-      //   let kk 
-      //   element.imgage = ""
-      // }
-      // 
     }
   }
 
-  // eslint-disable-next-line
   const sendOneQuestToDb = async (quest) => {
     return await axios({
       method: "POST",
@@ -282,7 +274,6 @@ function AddNewQuestion({ name }) {
           <div className="row">
             <label>
               Верен отговор: {state.answer}
-              {/* <input className='form-control' name="answer" type="text" value={state.answer} onChange={handleChange} /> */}
             </label>
           </div>
 

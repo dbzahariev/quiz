@@ -185,7 +185,6 @@ class GameColorcheck extends Component {
               <div id="timeBar"></div>
             </div>
             <div id="display">
-              {/* <h1 id="colors"> </h1> */}
               <h1 id="colors" style={{ color: this.returnSelectedColorName(this.state.colorText) }}>{this.returnSelectedColorLabel(this.state.colorName)}</h1>
             </div>
             <div id="score">

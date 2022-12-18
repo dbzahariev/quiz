@@ -517,7 +517,6 @@ class Play extends Component {
                     paddingTop: "30px",
                     paddingLeft: "10px",
                 }}>Куиз</h3>
-                {/* {this.state.type ? <h3>Категория: {this.state.type}</h3> : <span>Няма зададена категория</span>} */}
                 {quizContent}
             </div>
         );

@@ -9,8 +9,6 @@ export default function LeaderBoard(props) {
 
 
   useEffect(() => {
-    // fetchUserPoints()
-    // fetchAllPoints()
     fetchUserNames()
     // eslint-disable-next-line
   }, [])
@@ -25,43 +23,10 @@ export default function LeaderBoard(props) {
     })
   }
 
-  // eslint-disable-next-line
-  const fetchUserPoints = () => {
-    let url = `/api/game/all?gameName=${props.game}`
-    let user = getUser()
-    if (user !== "") {
-      url += `&nameHuman=${user}`
-    }
-    axios.get(url)
-      .then((el) => {
-        if (el.data[0] === undefined) {
-          return [{}]
-        }
-        let allPOints = el.data[0].points
-        allPOints = allPOints.map((el) => {
-          return { ...el, number: el.id + 1, key: el.id }
-        })
-        // .sort((a, b) => {
-        //   return b.score - a.score
-        // }).slice(0, 3)
-        setPoints(allPOints)
-      })
-      .catch(console.error)
-  }
-
   const getUser = () => {
     // let res = "ramsess"
     let res = "ramsess"
     return res
-  }
-
-  // eslint-disable-next-line
-  const rowPoints = (el, i) => {
-    return <div className='point-row' key={el.id}>
-      <p className="point-number">{`#: ${i + 1}`}</p>
-      <p className="point-score">{`score: ${el.score}`}</p>
-      <p className="point-time">{`time: ${el.time}`}</p>
-    </div>
   }
 
   const returnNullContetn = () => {
@@ -131,8 +96,6 @@ export default function LeaderBoard(props) {
   return (
     <div className="leader-board">
       <p className='user-name'>{`Hello ${getUser()}`}</p>
-      {/* {points.map(rowPoints)} */}
-
       <Table
         locale={{
           triggerDesc: null,

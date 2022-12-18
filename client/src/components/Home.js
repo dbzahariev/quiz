@@ -5,13 +5,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Home extends Component {
-
-    componentDidMount() {
-        if (this.props.auth.authenticated) {
-            this.props.history.push('/dashboard');
-        }
-    }
-
     render() {
         return (
             <Fragment>
@@ -29,10 +22,6 @@ class Home extends Component {
                                 </li>
                             </ul>
                         </div>
-                        {/* <div className="authContainer"> */}
-                        {/* <Link to="/login" className="authButtons" id="loginButton">Login</Link> */}
-                        {/* <Link to="/register" className="authButtons" id="signupButton">Signup</Link> */}
-                        {/* </div> */}
                         <div className='gamesContainer'>
                             <Link to="/gameColorCheck">Играй провери цвета</Link>
                             {localStorage.getItem("adminPass") === "1" ?

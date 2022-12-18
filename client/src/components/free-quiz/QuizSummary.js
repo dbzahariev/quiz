@@ -85,7 +85,6 @@ class QuizSummary extends Component {
                             <li><Link to="/play">Нова игра</Link></li>
                             <li><Link to="/">Връщане в началото</Link></li>
                         </ul>
-                        {/* <p>Want to earn really cool cash while playing games? <Link to="/register">Create an account now!</Link></p> */}
                     </section>
                 </Fragment>
             );
@@ -94,7 +93,6 @@ class QuizSummary extends Component {
                 <h1 className="no-stats">Няма намерена статистика</h1>
                 <ul>
                     <li><Link to="/play">Нова игра</Link></li>
-                    {/* <li><Link to="/">Back to Home</Link></li> */}
                 </ul>
             </section>
         }
