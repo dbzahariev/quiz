@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import ScrollToTop from './components/layout/ScrollToTop';
-import Header from './components/layout/Header'
 import Home from './components/Home'
 import Footer from './components/layout/Footer'
 import Play from './components/free-quiz/Play';
@@ -20,7 +19,6 @@ class App extends Component {
 				<Router>
 					<ScrollToTop>
 						<Fragment>
-							<Header />
 							<Route path="/" exact component={Home} />
 							<Route path="/play" exact component={Play} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
