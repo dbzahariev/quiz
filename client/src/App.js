@@ -12,7 +12,7 @@ import Register from './components/auth/Register';
 import Play from './components/free-quiz/Play';
 import FreeGameInstructions from './components/free-quiz/FreeGameInstructions';
 import QuizSummary from './components/free-quiz/QuizSummary';
-// import AddNewQuestion from './components/AddNewQuestion';
+import AddNewQuestion from './components/AddNewQuestion';
 import Dashboard from './components/user/Dashboard';
 import Profile from './components/user/Profile';
 import Games from './components/user/Games';
@@ -38,7 +38,7 @@ class App extends Component {
 							<Route path="/play" exact component={Play} />
 							<Route path="/play/instructions" exact component={FreeGameInstructions} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
-							{/* <Route path="/addNewQuestion" exact component={AddNewQuestion} /> */}
+							<Route path="/addNewQuestion" exact component={AddNewQuestion} />
 							<Route path="/gameColorCheck" exact component={GameColorcheck} />
 							<Switch>
 								<PrivateRoute path="/dashboard" exact component={Dashboard} />
