@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { logoutUser } from '../../actions/authActions';
-
 class Games extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
         this.state = {
             user: this.props.auth.user,
@@ -15,7 +13,7 @@ class Games extends Component {
         };
     }
 
-    componentDidMount () {
+    componentDidMount() {
         const sidenavElem = document.querySelectorAll('.sidenav');
         // eslint-disable-next-line
         const sidenavInstance = M.Sidenav.init(sidenavElem, {});
@@ -26,11 +24,11 @@ class Games extends Component {
         });
     }
 
-    componentWillUnmount () {
+    componentWillUnmount() {
         const sidenavElem = document.querySelectorAll('.sidenav');
         // eslint-disable-next-line
         const sidenavInstance = M.Sidenav.init(sidenavElem, {});
-        sidenavInstance[0].close();        
+        sidenavInstance[0].close();
     }
 
     greetUser = () => {
@@ -41,7 +39,7 @@ class Games extends Component {
         } else if (hour >= 12 && hour < 16) {
             return `Good afternoon ${this.state.username}, so nice having you back.`;
         } else {
-            return  `Good evening ${this.state.username}, hope you had an awesome day?`;
+            return `Good evening ${this.state.username}, hope you had an awesome day?`;
         }
     }
 
@@ -49,7 +47,7 @@ class Games extends Component {
         this.props.logoutUser();
     }
 
-    render () {
+    render() {
         const { color, user } = this.state;
         return (
             <Fragment>
@@ -84,7 +82,7 @@ class Games extends Component {
                                         </p>
                                         <h5 style={{ textTransform: 'capitalize' }}>{user.firstName} {user.lastName}</h5>
                                     </div>
-                                    <li className="divider"></li>  
+                                    <li className="divider"></li>
                                     <li><Link to="/dashboard"><span className="mdi mdi-view-dashboard-outline link-icon mdi-24px"></span>Dashboard</Link></li>
                                     <li className="games-active"><Link to="/myGames"><span className="mdi mdi-cube-outline link-icon mdi-24px"></span>My Games</Link></li>
                                     <li><Link to="/profile"><span className="mdi mdi-settings link-icon mdi-24px"></span>Profile</Link></li>
@@ -127,4 +125,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { logoutUser })(Games);
+export default connect(mapStateToProps)(Games);

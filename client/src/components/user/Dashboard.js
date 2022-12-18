@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 import M from 'materialize-css';
 
-import { logoutUser, setUserColor } from '../../actions/authActions';
-
 class Dashboard extends Component {
     constructor (props) {
         super(props);
@@ -227,4 +225,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth
 });
 
-export default connect(mapStateToProps, { logoutUser, setUserColor })(Dashboard);
+export default connect(mapStateToProps)(Dashboard);
