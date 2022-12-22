@@ -5,13 +5,10 @@
   "main": "server.js",
   "scripts": {
     "client": "npm run start --prefix client",
-    "clientinstall": "npm install --prefix client",
     "start": "node server.js",
     "server": "nodemon server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "npm install --prefix client && npm run build --prefix client",
-    "test": "SET \"NODE_ENV=test\" && mocha tests/**/*.test.js",
-    "test-watch": "nodemon --exec \"npm test\""
+    "client-install-build": "npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "Uzoanya Dominic",
