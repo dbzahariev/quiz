@@ -93,7 +93,8 @@ button.ant-btn.css-dev-only-do-not-override-26rdvq.ant-btn-link.ant-btn-sm {
   height: 100%;
   background: #611c;
   border-radius: 8px;
-  animation: timeBar 1.8s linear infinite;
+  animation: timeBar linear infinite;
+  animation-duration: var(--animate-dur);
 }
 
 @keyframes timeBar {

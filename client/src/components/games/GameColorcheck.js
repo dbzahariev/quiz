@@ -172,6 +172,18 @@ class GameColorcheck extends Component {
     return res
   }
 
+  returnAnimDur = () => {
+    let res = 1.8
+    const hardMode = this.state.hardMode;
+    if (hardMode === 1) res = 1.8
+    if (hardMode === 2) res = 1.5
+    if (hardMode === 3) res = 1.3
+    if (hardMode === 4) res = 1.0
+    if (hardMode === 5) res = 0.5
+
+    return `${res}s`
+  }
+
   render() {
     document.onkeyup = this.keyHandler
 
@@ -182,7 +194,7 @@ class GameColorcheck extends Component {
           <audio id="button-sound" src={buttonSound}></audio>
           <div className="cont">
             <div id="pgrBar" className="prgBar">
-              <div id="timeBar"></div>
+              <div id="timeBar" style={{ "--animate-dur": this.returnAnimDur() }}></div>
             </div>
             <div id="display">
               <h1 id="colors" style={{ color: this.returnSelectedColorName(this.state.colorText) }}>{this.returnSelectedColorLabel(this.state.colorName)}</h1>
