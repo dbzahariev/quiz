@@ -8,7 +8,7 @@ import Footer from './components/layout/Footer'
 import Play from './components/free-quiz/Play';
 import QuizSummary from './components/free-quiz/QuizSummary';
 import AddNewQuestion from './components/addNewQuestion';
-import GameColorcheck from "./components/games/GameColorcheck"
+import GameColorCheck from "./components/games/GameColorCheck"
 
 import store from './store';
 
@@ -23,7 +23,7 @@ class App extends Component {
 							<Route path="/play" exact component={Play} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
 							<Route path="/addNewQuestion" exact component={AddNewQuestion} />
-							<Route path="/gameColorCheck" exact component={GameColorcheck} />
+							<Route path="/gameColorCheck" exact component={GameColorCheck} />
 							<Footer />
 						</Fragment>
 					</ScrollToTop>

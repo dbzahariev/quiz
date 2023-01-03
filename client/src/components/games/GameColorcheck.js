@@ -4,6 +4,9 @@ import { withRouter } from 'react-router-dom';
 import buttonSound from '../../assets/audio/button-sound.mp3';
 import ExitBtn from "../exitbtn"
 import LeaderBoard from './leaderBoard';
+import { saveGameInDb } from './leaderBoard'
+import { Modal, Button, message } from 'antd';
+import moment from 'moment';
 
 const colors = [
   { name: "red", label: "Червено", color: 360 },
@@ -19,46 +22,87 @@ const colors = [
   { name: "black", label: "Черно", color: -1 },
 ]
 
-const idButtons = { corect: "righty", wrong: "wrong" }
+const idButtons = { correct: "righty", wrong: "wrong" }
 
-class GameColorcheck extends Component {
+function timeConvert2(time) {
+  if (time < 0) return "0s"
+  let duration = moment.duration(time, "seconds")
+
+  let seconds = duration.seconds()
+  let minutes = duration.minutes()
+  let hours = duration.hours()
+
+  if (duration.asMilliseconds() < 0) {
+    return { seconds, minutes, hours, fullString: "невалидно време" }
+  }
+
+  if (duration.asHours() >= 24) {
+    return { seconds, minutes, hours, fullString: "над ден" }
+  }
+
+  let fullString = ""
+
+  if (hours > 0) fullString = `${hours} ч., ${fullString}`
+  if (minutes > 0) fullString = `${minutes} м., ${fullString}`
+  if (seconds >= 0) fullString = `${fullString}${seconds} с.`
+  // else fullString = `${fullString}${seconds}с.`
+  // if (hours > 0) fullString = `${hours} ч., ${minutes} м., ${seconds} с.`
+  // else if (minutes > 0) fullString = `${minutes} м., ${seconds} с.`
+  // else fullString = `${seconds}с.`
+
+  return { seconds, minutes, hours, fullString }
+}
+
+export function convertTime(time, retNum) {
+  let res = Math.round(time / 100)
+  if (retNum) return res
+  else return timeConvert2(time / 100).fullString
+}
+
+class GameColorCheck extends Component {
   constructor(props) {
     super(props);
     this.state = {
       score: 0,
       colorText: colors[0].color,
       colorName: colors[0].name,
-      btnsDisabled: true,
-      hardMode: 1
+      buttonDisabled: true,
+      hardMode: 1,
+      timeInGame: 0,
+      alertMsg: "",
+      refreshLeaderBoard: 0
     };
     this.nextColor = this.nextColor.bind(this)
     this.checkYes = this.checkYes.bind(this)
     this.checkNo = this.checkNo.bind(this)
     this.keyHandler = this.keyHandler.bind(this)
     this.changeMode = this.changeMode.bind(this)
+    this.startTimer = this.startTimer.bind(this)
+    this.stopTimer = this.stopTimer.bind(this)
   }
+  // const[messageApi, contextHolder] = message.useMessage();
 
-  hheight = window.innerHeight;
-  wwidth = window.innerWidth;
+  windowHeight = window.innerHeight;
+  windowWidth = window.innerWidth;
 
   returnSelectedColorName = (mainColor) => {
-    let kk = mainColor
-    return `hsl(${kk}, 100%, ${kk === -1 ? 0 : kk === 0 ? 100 : 50}%)`
+    return `hsl(${mainColor}, 100%, ${mainColor === -1 ? 0 : mainColor === 0 ? 100 : 50}%)`
     // return colors.filter((el) => el.color === mainColor).slice()[0].name
   }
+
 
   returnSelectedColorLabel = (mainColor) => {
     return colors.filter((el) => el.name === mainColor).slice()[0].label
   }
 
   returnHarderColors = () => {
-    let harMode = this.state.hardMode
+    let hardMode = this.state.hardMode
     let res = colors.slice()
-    if (harMode === 1) res = res.slice(0, 3)
-    if (harMode === 2) res = res.slice(0, 5)
-    if (harMode === 3) res = res.slice(0, 7)
-    if (harMode === 4) res = res.slice(0, 9)
-    if (harMode === 5) res = res.slice(0, 11)
+    if (hardMode === 1) res = res.slice(0, 3)
+    if (hardMode === 2) res = res.slice(0, 5)
+    if (hardMode === 3) res = res.slice(0, 7)
+    if (hardMode === 4) res = res.slice(0, 9)
+    if (hardMode === 5) res = res.slice(0, 11)
     return res
   }
 
@@ -83,7 +127,7 @@ class GameColorcheck extends Component {
       }
     })
     this.nextColor(event)
-    this.fixClickedClas(event)
+    this.fixClickedClass(event)
   }
 
   checkNo = (event) => {
@@ -94,7 +138,7 @@ class GameColorcheck extends Component {
 
       }
     })
-    this.fixClickedClas(event)
+    this.fixClickedClass(event)
     this.nextColor(event)
   }
 
@@ -102,7 +146,7 @@ class GameColorcheck extends Component {
     this.setState({ ...this.state, hardMode: newMode })
   }
 
-  fixClickedClas = (event) => {
+  fixClickedClass = (event) => {
     if (event.target.classList) {
       event.target.classList.add("clicked")
     }
@@ -121,43 +165,92 @@ class GameColorcheck extends Component {
 
   keyHandler = (e) => {
     //If Game started
-    if (this.state.btnsDisabled === false) {
+    if (this.state.buttonDisabled === false) {
       if (["ArrowLeft", "a", ",", "<"].includes(e.key)) {
-        document.getElementById(idButtons.corect).click()
+        document.getElementById(idButtons.correct).click()
       } else if (["ArrowRight", "d", ".", ">"].includes(e.key)) {
         document.getElementById(idButtons.wrong).click()
       }
     }
     else {
       if (["Enter", " "].includes(e.key)) {
-        document.getElementById("startBtn").click()
+        document.getElementById("startButton").click()
       }
     }
   }
 
+  saveGame = async () => {
+    return saveGameInDb({
+      system: {
+        game: "colorCheck"
+      },
+      data: {
+        score: this.state.score,
+        time: Math.round((this.state.timeInGame / 100)),
+        hardMode: this.state.hardMode
+      }
+    })
+  }
+
   startGame = (event) => {
     event.preventDefault()
-    document.getElementById("startBtn").style.display = "none"
+    document.getElementById("startButton").style.display = "none"
     document.getElementById("timeBar").classList.add("timeBar")
 
-    this.setState({ btnsDisabled: false })
+    this.startTimer()
+
+    this.setState({ buttonDisabled: false })
 
     setInterval(() => {
       let timeBar = document.getElementById("timeBar")
-      let progresBar = document.getElementById("pgrBar")
-      let dif = timeBar.offsetWidth - progresBar.offsetWidth
+      let progressBar = document.getElementById("progressBar")
+      let dif = timeBar.offsetWidth - progressBar.offsetWidth
       let end = dif > 0
 
       if (end) {
-        document.getElementById("startBtn").style.display = "block"
-        alert(`Timeout, your score is ${this.state.score}`)
-        this.setState({ score: 0, btnsDisabled: true })
-        timeBar.classList.remove("timeBar")
+        this.setState({ timeInGame: this.state.timeInGame + 10, buttonDisabled: true }, async () => {
+          document.getElementById("startButton").style.display = "block"
+          // await this.saveGame()
+          // console.log("after save")
+          // this.saveGame().then((el) => {
+          //   console.log("save", el.msg)
+          // this.setState({ alertMsg: "ok" })
+          // Alert({ type: "success" }, "hi")
+          // alert(`Времето изтече!\nТочки: ${this.state.score}.\nВреме: ${this.convertTime(false)}.\nТрудност: ${this.state.hardMode}.\n${el.msg}`)
+
+          timeBar.classList.remove("timeBar")
+          this.stopTimer()
+
+          let key222 = "2"
+
+          message.open({
+            key: key222,
+            type: "loading",
+            content: "Запазване",
+          })
+          this.saveGame().then((el) => {
+            let type = el.msg === "New point is saved successfully!" ? "success" : "error"
+
+            message.open({
+              key: key222,
+              type: type,
+              content: <>
+                <span style={{ paddingRight: "10px" }}>{`Времето изтече!`}</span>
+                <p style={{ padding: 0, margin: 0 }}>{`Точки: ${this.state.score}`}</p>
+                <p style={{ padding: 0, margin: 0 }}>{`Време: ${convertTime(this.state.timeInGame, false)}`}</p>
+                <p style={{ padding: 0, margin: 0 }}>{`Трудност: ${this.state.hardMode}`}</p>
+                {/* <p>{el.msg}</p> */}
+              </>,
+              duration: 2
+            })
+            this.setState({ score: 0, refreshLeaderBoard: this.state.refreshLeaderBoard + 1 })
+          })
+        })
       }
     }, 1);
   }
 
-  hadleQuitButtonClick = (e) => {
+  handleQuitButtonClick = (e) => {
     document.getElementById('button-sound').play();
     if (window.confirm('Сигурен ли си, че искаш да излезеш от куиза?')) {
       this.props.history.push('/');
@@ -184,16 +277,51 @@ class GameColorcheck extends Component {
     return `${res}s`
   }
 
+  startTimer() {
+    this.setState({
+      timeInGame: 10
+    })
+    this.timer = setInterval(() => {
+      this.setState({ timeInGame: this.state.timeInGame + 10 })
+    }, 100);
+  }
+
+  stopTimer() {
+    clearInterval(this.timer)
+  }
+
+  handleOk = () => {
+    this.setState({ alertMsg: "" })
+  }
+
   render() {
     document.onkeyup = this.keyHandler
 
     return <>
       <div className="full-game">
-        <LeaderBoard game="colorCheck" />
+        <Modal title="Basic Modal" open={this.state.alertMsg !== ""} onOk={this.handleOk} onCancel={this.handleOk}
+          footer={[
+            <Button key="back" onClick={this.handleOk}>
+              Ok
+            </Button>]}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
+        {/* {this.state.alertMsg !== "" ? <Alert
+          message={this.state.alertMsg}
+          type="success"
+        /> : <p>not ok</p>} */}
+        <LeaderBoard game="colorCheck" refreshLeaderBoard={this.state.refreshLeaderBoard} />
+        {/* <Alert
+          message="hi"
+          type='success'
+        /> */}
         <div className="games1">
           <audio id="button-sound" src={buttonSound}></audio>
           <div className="cont">
-            <div id="pgrBar" className="prgBar">
+            <div id="progressBar" className="progressBar">
               <div id="timeBar" style={{ "--animate-dur": this.returnAnimDur() }}></div>
             </div>
             <div id="display">
@@ -203,11 +331,11 @@ class GameColorcheck extends Component {
               <div id="scr">{this.state.score}</div>
             </div>
             <div className="controls">
-              <button disabled={this.state.btnsDisabled} id={idButtons.corect} onClick={this.checkYes}>✓</button>
-              <button disabled={this.state.btnsDisabled} id={idButtons.wrong} onClick={this.checkNo}>✕</button>
+              <button disabled={this.state.buttonDisabled} id={idButtons.correct} onClick={this.checkYes}>✓</button>
+              <button disabled={this.state.buttonDisabled} id={idButtons.wrong} onClick={this.checkNo}>✕</button>
             </div>
-            <div className="startBtn">
-              <button id="startBtn" onClick={this.startGame}>Start</button>
+            <div className="startButton">
+              <button id="startButton" onClick={this.startGame}>Start</button>
             </div>
 
 
@@ -233,4 +361,4 @@ class GameColorcheck extends Component {
   }
 }
 
-export default connect()(withRouter(GameColorcheck));
+export default connect()(withRouter(GameColorCheck));

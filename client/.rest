@@ -1,0 +1,37 @@
+@id = 1
+@X-Auth-Token= c8d23279fec54671a43fcd93068762d1
+
+GET https://jsonplaceholder.typicode.com/todos
+
+###
+GET https://jsonplaceholder.typicode.com/todos/{{id}}
+Content-Type: application/json
+
+###
+GET https://api.football-data.org/v4/matches/391937
+X-Auth-Token: {{X-Auth-Token}}
+
+
+
+@url = http://localhost:8080
+@username = ramsess4
+@gameName = colorCheck
+### Games
+### GET all points for human and game name
+GET {{url}}/api/game/all
+  ?nameHuman={{username}}
+  &gameName={{gameName}}
+
+### Add new point
+POST {{url}}/api/game/update
+content-type: application/json
+
+{
+    "nameHuman": "{{username}}",
+    "gameName": "{{gameName}}",
+    "newPoint": {
+        "score": 6,
+        "time": 0.07,
+        "hardMode": 1
+    }
+}

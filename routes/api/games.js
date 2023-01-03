@@ -66,8 +66,6 @@ router.post("/update", (req, res) => {
     return res.status(404).json({ msg: `Not found gameName (${data.gameName})` });
   }
 
-
-
   Games.find({
     nameHuman: data.nameHuman,
     gameName: data.gameName
@@ -76,12 +74,12 @@ router.post("/update", (req, res) => {
       const game = new Games({
         nameHuman: req.body.nameHuman,
         gameName: req.body.gameName,
-        points: [newPoint],
+        points: [{ ...newPoint, id: 0, date: (new Date()).toISOString() }],
       });
 
       game.save()
-        .then(() => {
-          return res.status(201).json({ msg: "New user saved!" })
+        .then((el) => {
+          return res.status(201).json({ msg: "New user saved!", data: el.points[0] })
         })
         .catch(err => console.log(err));
 
@@ -97,18 +95,17 @@ router.post("/update", (req, res) => {
     }
 
     let newId = ((oneGame.points.sort((a, b) => b.id - a.id)[0] || { id: -1 }).id) + 1
-    oneGame.points.push({ ...newPoint, id: newId })
+    oneGame.points.push({ ...newPoint, id: newId, date: (new Date()).toISOString() })
 
     let newPoints = oneGame.points
-
-    // return res.status(200).json({ msg: `I found id (${id})` });
 
     Games.findOneAndUpdate(
       { _id: id },
       { points: newPoints },
-      { useFindAndModify: false }
-    ).then(() => {
-      return res.status(201).json({ msg: "Bet is saved successfully!" });
+      { useFindAndModify: false, returnDocument: "after" }
+    ).then((el) => {
+      let newPoint = newPoints.sort((a, b) => b.id - a.id)[0]
+      return res.status(201).json({ msg: "New point is saved successfully!", data: newPoint });
     }).catch(() => {
       return res.status(500);
     });

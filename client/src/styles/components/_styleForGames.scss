@@ -6,7 +6,7 @@
 }
 
 .full-game {
-  background-color: blue;
+  // background-color: blue;
   display: flex;
   flex-direction: row;
 }
@@ -14,7 +14,7 @@
 .leader-board {
   width: 50vw;
   height: 100vh;
-  background-color: green;
+  background-color: #000;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,7 +80,7 @@ button.ant-btn.css-dev-only-do-not-override-26rdvq.ant-btn-link.ant-btn-sm {
   justify-content: space-evenly;
 }
 
-#pgrBar {
+#progressBar {
   width: 75%;
   height: 16px;
   border: 2px solid #444;
@@ -167,7 +167,7 @@ button.ant-btn.css-dev-only-do-not-override-26rdvq.ant-btn-link.ant-btn-sm {
   background-color: #b77c;
 }
 
-#startBtn {
+#startButton {
   padding: 4px 8px;
   background-color: #ebe5e5;
   font-size: 20px;
@@ -208,4 +208,26 @@ button.ant-btn.css-dev-only-do-not-override-26rdvq.ant-btn-link.ant-btn-sm {
 
 .hard-mode>button:focus {
   background-color: #9effa3;
+}
+
+.leader-board-nickname-div>p {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.leader-board-nickname-div>input {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+#userName:hover {
+  background-color: #fff;
+  color: #000
+}
+
+#root>div.full-game>div.leader-board>div.leader-board-nickname-div,
+#userName {
+  color: rgb(255, 255, 255);
 }
