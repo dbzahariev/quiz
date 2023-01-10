@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import buttonSound from '../../assets/audio/button-sound.mp3';
+import buttonSound from './assets/audio/button-sound.mp3';
 import ExitBtn from "./components/exitbtn"
 import LeaderBoard from './components/games/leaderBoard';
 import { saveGameInDb } from './components/games/leaderBoard'
