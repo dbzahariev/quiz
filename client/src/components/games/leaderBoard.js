@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios"
 import { Table } from 'antd';
-import { convertTime } from './GameColorCheck';
+import { convertTime } from './gameColorCheck';
 
 const getUserFromLS = () => {
   return sessionStorage.getItem("user") || `user-${`${getRandomInt()}${getRandomInt()}${getRandomInt()}`}`
