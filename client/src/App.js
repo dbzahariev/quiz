@@ -8,7 +8,7 @@ import Footer from './components/layout/Footer'
 import Play from './components/free-quiz/Play';
 import QuizSummary from './components/free-quiz/QuizSummary';
 import AddNewQuestion from './components/addNewQuestion';
-import GameColorCheck from './components/games/gameColorCheck';
+import GameColorCheck from './gameColorCheck';
 
 import store from './store';
 
