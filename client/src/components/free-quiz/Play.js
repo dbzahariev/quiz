@@ -476,12 +476,12 @@ class Play extends Component {
                                 {currentQuestion.question !== undefined ? <ShowPictures question={currentQuestion} /> : <></>}
                                 <h5>{currentQuestion.question}</h5>
                                 <div className="option-container">
-                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionA}</p>
-                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionB}</p>
+                                    <p onClick={this.handleOptionClick} className="option"><span class="opt">A</span><span class="exactly-answer">{currentQuestion.optionA}</span></p>
+                                    <p onClick={this.handleOptionClick} className="option"><span class="opt">C</span><span class="exactly-answer">{currentQuestion.optionC}</span></p>
                                 </div>
                                 <div className="option-container">
-                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionC}</p>
-                                    <p onClick={this.handleOptionClick} className="option">{currentQuestion.optionD}</p>
+                                    <p onClick={this.handleOptionClick} className="option"><span class="opt">B</span><span class="exactly-answer">{currentQuestion.optionB}</span></p>
+                                    <p onClick={this.handleOptionClick} className="option"><span class="opt">D</span><span class="exactly-answer">{currentQuestion.optionD}</span></p>
                                 </div>
                             </>}
                     </div>
