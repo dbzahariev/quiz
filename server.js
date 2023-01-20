@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 8080; // Step 1
 const http = require('http').Server(app);
 const socketIO = require('socket.io')(http, {
     cors: {
-        origin: "http://localhost:3000"
+        origin: ["https://ramsess-quiz.onrender.com", "http://localhost:3000"]
     }
 });
 
