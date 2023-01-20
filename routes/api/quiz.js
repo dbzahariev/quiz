@@ -51,6 +51,8 @@ function shuffleArray(array) {
 // @desc get questions
 // @access Private
 router.get('/getFreeQuiz', (req, res) => {
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    console.log("hiiii", fullUrl)
     Quiz.find({ delete: false })
         .then(quizzess => {
             let newQuestionsArr = shuffleArray(quizzess).slice(0, Math.min(quizzess.length, 15))
