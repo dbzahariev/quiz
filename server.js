@@ -78,10 +78,11 @@ const io = new Server(server,
 //     withCredentials: true
 // })
 
+
+server.listen(PORT, console.log(`Server is starting at ${PORT}`));
+
 io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
         socket.broadcast.emit("receive_message", data)
     })
 })
-
-server.listen(PORT, console.log(`Server is starting at ${PORT}`));
