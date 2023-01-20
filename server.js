@@ -55,19 +55,28 @@ app.use("/api/game/", routesGamesDate);
 // https://ramsess-quiz.onrender.com/socket.io/?EIO=4&transport=polling&t=ONGnqgc
 
 const server = http.createServer(app)
-const io = new Server(server, {
-    // cors: {
-    //     // origin: "http://localhost:* http://127.0.0.1:* https://ramsess-quiz.onrender.com:* https://ramsess-quiz-br.onrender.com:*"
-    //     // origin: "https://ramsess-quiz.onrender.com, http://localhost:8080/*"
-    //     origin: "*"
-    // }
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    },
-    withCredentials: true
+const io = new Server(server,
+    {
+        cors: {
+            origin: ["http://localhost:3000", "https://ramsess-quiz.onrender.com", "https://ramsess-quiz-be.onrender.com"],
+            allowedHeaders: ["my-custom-header"],
+            credentials: true
+        }
+    });
 
-})
+// const io = new Server(server, {
+
+//     // cors: {
+//     //     // origin: "http://localhost:* http://127.0.0.1:* https://ramsess-quiz.onrender.com:* https://ramsess-quiz-br.onrender.com:*"
+//     //     // origin: "https://ramsess-quiz.onrender.com, http://localhost:8080/*"
+//     //     origin: "*"
+//     // }
+//     cors: {
+//         origin: "*",
+//         methods: ["GET", "POST"]
+//     },
+//     withCredentials: true
+// })
 
 io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
