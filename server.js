@@ -7,7 +7,7 @@ const axios = require("axios")
 
 const app = express();
 const cors = require('cors')
-const PORT = 8080; // Step 1
+const PORT = process.env.PORT || 8080; // Step 1
 
 // const https = require("https")
 // const { Server } = require("socket.io")
