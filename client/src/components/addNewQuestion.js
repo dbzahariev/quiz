@@ -3,11 +3,12 @@ import axios from "axios";
 
 import io from "socket.io-client"
 //https://ramsess-quiz.onrender.com
-// const socket = io.connect("http://localhost:8080")
+const socket = io.connect("http://ramsess-quiz-be.onrender.com:10000")
+// const socket = io.connect("https://ramsess-quiz.onrender.com")
 // const socket = io.connect("https://ramsess-quiz.onrender.com/api")
 // https://ramsess-quiz.onrender.com/api/getFreeQuiz
 
-const socket = io("https://ramsess-quiz.onrender.com/api")
+// const socket = io("https://ramsess-quiz.onrender.com")
 function AddNewQuestion() {
   const [state, setState] = useState({
     question: "",
