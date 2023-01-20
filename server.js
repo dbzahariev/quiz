@@ -52,13 +52,12 @@ app.use(morgan("tiny"));
 app.use("/api/", routesQuiz);
 app.use("/api/game/", routesGamesDate);
 
+// https://ramsess-quiz.onrender.com/socket.io/?EIO=4&transport=polling&t=ONGnqgc
+
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "*"
-    },
-    Headers: {
-        "Access-Control-Allow-Origin": "*"
+        origin: "http://localhost:* http://127.0.0.1:* https://ramsess-quiz.onrender.com:* https://ramsess-quiz-br.onrender.com:*"
     }
 })
 
