@@ -55,8 +55,7 @@ app.use("/api/game/", routesGamesDate);
 const server = http.createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+        origin: "*"
     }
 })
 
