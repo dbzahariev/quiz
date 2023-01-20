@@ -53,7 +53,14 @@ app.use("/api/", routesQuiz);
 app.use("/api/game/", routesGamesDate);
 
 const server = http.createServer(app)
-const io = new Server(server)
+const io = new Server(server, {
+    cors: {
+        origin: "*"
+    },
+    Headers: {
+        "Access-Control-Allow-Origin": "*"
+    }
+})
 
 io.on("connection", (socket) => {
     socket.on("send_message", (data) => {
