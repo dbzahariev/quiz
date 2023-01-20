@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useEffect } from 'react'
 import axios from "axios";
 
-function AddNewQuestion({ name }) {
+import io from "socket.io-client"
+const socket = io.connect("http://localhost:8080")
+
+function AddNewQuestion() {
   const [state, setState] = useState({
     question: "",
     optionA: "",
@@ -14,20 +16,37 @@ function AddNewQuestion({ name }) {
     manyQuestionsRowText: ""
   })
 
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      console.log("rec", data)
+    })
+    retAxiosLocal()
+    // eslint-disable-next-line
+  }, [socket])
+
+  const retAxiosLocal = () => {
+    let res = window.location.href.toString().replace("addNewQuestion", "")
+    console.log(res)
+  }
+
+  const sendMsg = () => {
+    socket.emit("send_message", { message: "hi from ui", time: (new Date()).toISOString() })
+  }
+
   const handleSubmit = (event) => {
     event.preventDefault()
     if (state.question !== "") {
       sendOneQuestToDb(state)
     } else {
-      prepManyquestion222();
+      prepManyQuestion222();
     }
   }
 
-  const prepManyquestion222 = async () => {
-    let foo = prepareManyQuestions();
+  const prepManyQuestion222 = async () => {
+    let allQuestions = prepareManyQuestions();
 
     // eslint-disable-next-line
-    for (let element of foo) {
+    for (let element of allQuestions) {
       let imgIndex = element.question.indexOf("img")
 
       if (imgIndex === -1) {
@@ -49,7 +68,7 @@ function AddNewQuestion({ name }) {
       clearState()
       return res
     }).catch((err) => {
-      alert("Грешка")
+      alert("Грешка!!!", JSON.stringify(quest))
       console.error(err);
       return console.error(err);
     });
@@ -105,7 +124,7 @@ function AddNewQuestion({ name }) {
         } else if (arr[1] === "d") {
           oneQuestion.answer = oneQuestion.optionD
         } else {
-
+          oneQuestion.answer = ""
         }
       } else {
         allQuestionsArr.push({ ...oneQuestion })
@@ -196,7 +215,6 @@ function AddNewQuestion({ name }) {
       arr2.push(optionFromText)
     }
 
-    console.log("b", arr2.length)
     if (arr2 === 1) return
 
     questionn.question = arr2[0][0] || ""
@@ -232,6 +250,7 @@ function AddNewQuestion({ name }) {
 
   return (
     <>
+      <button onClick={sendMsg}>Send MSG</button>
       <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
         onSubmit={handleSubmit}
       >
@@ -305,10 +324,6 @@ function AddNewQuestion({ name }) {
       </form>
     </>
   )
-}
-
-AddNewQuestion.propTypes = {
-  name: PropTypes.string.isRequired,
 }
 
 export default AddNewQuestion

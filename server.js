@@ -8,6 +8,10 @@ const app = express();
 const cors = require('cors')
 const PORT = process.env.PORT || 8080; // Step 1
 
+const http = require("http")
+const { Server } = require("socket.io")
+
+
 const routesQuiz = require("./routes/api/quiz");
 const routesGamesDate = require("./routes/api/games");
 // const routesChat = require("./routes/chat");
@@ -48,4 +52,18 @@ app.use(morgan("tiny"));
 app.use("/api/", routesQuiz);
 app.use("/api/game/", routesGamesDate);
 
-app.listen(PORT, console.log(`Server is starting at ${PORT}`));
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
+
+io.on("connection", (socket) => {
+    socket.on("send_message", (data) => {
+        socket.broadcast.emit("receive_message", data)
+    })
+})
+
+server.listen(PORT, console.log(`Server is starting at ${PORT}`));
