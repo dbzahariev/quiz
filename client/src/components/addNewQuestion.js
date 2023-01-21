@@ -2,14 +2,9 @@ import React, { useState, useEffect } from 'react'
 import axios from "axios";
 
 import io from "socket.io-client"
-//https://ramsess-quiz.onrender.com
-// const socket = io.connect("http://localhost:8080")
 const socket = io.connect("https://ramsess-quiz-be.onrender.com")
-// const socket = io.connect("https://ramsess-quiz.onrender.com")
-// const socket = io.connect("https://ramsess-quiz.onrender.com/api")
-// https://ramsess-quiz.onrender.com/api/getFreeQuiz
+// const socket = io.connect("http://localhost:8080")
 
-// const socket = io("https://ramsess-quiz.onrender.com")
 function AddNewQuestion() {
   const [state, setState] = useState({
     question: "",
@@ -26,17 +21,20 @@ function AddNewQuestion() {
     socket.on("messageResponse", (data) => {
       console.log("rec", data)
     })
-    retAxiosLocal()
+    socket.on("notification", (data) => {
+      console.log("not", data)
+    })
     // eslint-disable-next-line
   }, [socket])
 
-  const retAxiosLocal = () => {
-    let res = window.location.href.toString().replace("addNewQuestion", "")
-    console.log(res)
-  }
 
   const sendMsg = () => {
     socket.emit("message", { message: "hi from ui", time: (new Date()).toISOString() })
+  }
+
+  const getAllUser = () => {
+    console.log('gg')
+    socket.emit("get-all-users", { message: "hi from ui2", time: (new Date()).toISOString() })
   }
 
   const handleSubmit = (event) => {
@@ -257,6 +255,7 @@ function AddNewQuestion() {
   return (
     <>
       <button onClick={sendMsg}>Send MSG</button>
+      <button onClick={getAllUser}>getAllUser</button>
       <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
         onSubmit={handleSubmit}
       >
