@@ -27,6 +27,9 @@ function AddNewQuestion() {
     socket.on("newUserResponse", (data) => {
       console.log("newUserResponse", data)
     })
+    socket.on("GetAllQuestion", (data) => {
+      console.log("ffff", data)
+    })
     // eslint-disable-next-line
   }, [socket])
 
@@ -259,11 +262,22 @@ function AddNewQuestion() {
   }
 
 
+
+  const AddQuestionAll = () => {
+    socket.emit("AddQuestionAll", ["hi", "hi2"])
+  }
+
+  const GetAllQuestion = () => {
+    socket.emit("GetAllQuestion")
+  }
+
   return (
     <>
       <button onClick={sendMsg}>Send MSG</button>
       <button onClick={getAllUser}>getAllUser</button>
       <button onClick={newUser}>newUser</button>
+      <button onClick={AddQuestionAll}>AddQuestionAll</button>
+      <button onClick={GetAllQuestion}>GetAllQuestion</button>
       <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
         onSubmit={handleSubmit}
       >

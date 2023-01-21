@@ -55,16 +55,26 @@ app.use("/api/game/", routesGamesDate);
 
 // START SOCKET.IO
 let users = []
+let allQuestions = []
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`)
     socket.on("message", data => {
         socketIO.emit("messageResponse", data)
     })
 
+    socket.on("AddQuestionAll", data => {
+        allQuestions = data
+        socketIO.emit("notification", { msg: "Added all question" })
+    })
+
+    socket.on("GetAllQuestion", data => {
+        socketIO.emit("notification", { msg: "Give you all Questions", allQuestions })
+    })
+
     socket.on("get-all-users", data => {
         console.log('gg2')
-        socket.broadcast.emit("notification", data)
-        socketIO.emit("notification", data)
+        socket.broadcast.emit("notification", { data, users })
+        socketIO.emit("notification", { data, users })
     })
 
     socket.on("typing", data => (
