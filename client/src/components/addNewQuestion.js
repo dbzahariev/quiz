@@ -3,7 +3,8 @@ import axios from "axios";
 
 import io from "socket.io-client"
 //https://ramsess-quiz.onrender.com
-const socket = io.connect("https://ramsess-quiz-be.onrender.com:10000")
+// const socket = io.connect("http://localhost:8080")
+const socket = io.connect("https://ramsess-quiz-be.onrender.com")
 // const socket = io.connect("https://ramsess-quiz.onrender.com")
 // const socket = io.connect("https://ramsess-quiz.onrender.com/api")
 // https://ramsess-quiz.onrender.com/api/getFreeQuiz
@@ -22,7 +23,7 @@ function AddNewQuestion() {
   })
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
+    socket.on("messageResponse", (data) => {
       console.log("rec", data)
     })
     retAxiosLocal()
@@ -35,7 +36,7 @@ function AddNewQuestion() {
   }
 
   const sendMsg = () => {
-    socket.emit("send_message", { message: "hi from ui", time: (new Date()).toISOString() })
+    socket.emit("message", { message: "hi from ui", time: (new Date()).toISOString() })
   }
 
   const handleSubmit = (event) => {
