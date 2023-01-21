@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
+import { SOCKET_IO_SERVER } from "../Helper"
 
 import io from "socket.io-client"
-const socket = io.connect("https://ramsess-quiz-be.onrender.com")
-// const socket = io.connect("http://localhost:8080")
+const socket = io.connect(SOCKET_IO_SERVER)
 
 function AddNewQuestion() {
   const [state, setState] = useState({
@@ -24,6 +24,9 @@ function AddNewQuestion() {
     socket.on("notification", (data) => {
       console.log("not", data)
     })
+    socket.on("newUserResponse", (data) => {
+      console.log("newUserResponse", data)
+    })
     // eslint-disable-next-line
   }, [socket])
 
@@ -35,6 +38,10 @@ function AddNewQuestion() {
   const getAllUser = () => {
     console.log('gg')
     socket.emit("get-all-users", { message: "hi from ui2", time: (new Date()).toISOString() })
+  }
+
+  const newUser = () => {
+    socket.emit("newUser", { username: "ramsess", password: "901210" })
   }
 
   const handleSubmit = (event) => {
@@ -256,6 +263,7 @@ function AddNewQuestion() {
     <>
       <button onClick={sendMsg}>Send MSG</button>
       <button onClick={getAllUser}>getAllUser</button>
+      <button onClick={newUser}>newUser</button>
       <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
         onSubmit={handleSubmit}
       >
