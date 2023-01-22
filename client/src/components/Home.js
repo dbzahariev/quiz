@@ -23,6 +23,7 @@ class Home extends Component {
                             </ul>
                         </div>
                         <div className='gamesContainer'>
+                            <Link to="/play/host">Водещ</Link>
                             <Link to="/gameColorCheck">Играй провери цвета</Link>
                             {localStorage.getItem("adminPass") === "1" ?
                                 <Link to="/addNewQuestion">Добави нов въпрос</Link> : <></>}

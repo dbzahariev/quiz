@@ -56,10 +56,31 @@ app.use("/api/game/", routesGamesDate);
 // START SOCKET.IO
 let users = []
 let allQuestions = []
+let currentQuestion = {}
+let hoverOption = ""
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`)
     socket.on("message", data => {
         socketIO.emit("messageResponse", data)
+    })
+
+    socket.on("SetCurrentQuestion", (data) => {
+        currentQuestion = data
+        socketIO.emit("notification", { msg: "set current question", currentQuestion })
+    })
+
+    socket.on("GetCurrentQuestion", data => {
+        socketIO.emit("getCurrentQuestion", { msg: "Current question is: ", currentQuestion })
+    })
+
+    socket.on("OnHover", data => {
+        hoverOption = data
+        socketIO.emit("notification", { msg: "Hover on", option: data })
+    })
+
+    socket.on("OffHover", data => {
+        hoverOption = ""
+        socketIO.emit("notification", { msg: "Hover off", option: data })
     })
 
     socket.on("AddQuestionAll", data => {

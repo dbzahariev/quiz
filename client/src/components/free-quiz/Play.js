@@ -17,6 +17,9 @@ import correctNotification from '../../assets/audio/correct-answer.mp3';
 import wrongNotification from '../../assets/audio/wrong-answer.mp3';
 import ShowPictures from '../showPictures';
 import ExitBtn from "../exitbtn"
+import io from "socket.io-client"
+import { SOCKET_IO_SERVER } from "../../Helper"
+
 
 class Play extends Component {
     constructor(props) {
@@ -43,11 +46,15 @@ class Play extends Component {
             previousRandomNumbers: [],
             time: {},
             pauseTime: 0,
-            pauseTtiger: false
+            pauseTiger: false,
+
+            socket: io.connect(SOCKET_IO_SERVER)
         };
         this.interval = null
         this.intervalPause = null
         this.pause = this.pause.bind(this)
+        this.onMouseEnter = this.onMouseEnter.bind(this)
+        this.onMouseLeave = this.onMouseLeave.bind(this)
     }
 
     componentDidMount() {
@@ -56,6 +63,9 @@ class Play extends Component {
             loading: true
         });
         this.startTimer();
+        this.state.socket.on("notification", (data) => {
+            console.log("not2", data)
+        })
     }
 
     componentWillUnmount() {
@@ -65,6 +75,9 @@ class Play extends Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         if (!isEmpty(nextProps.quiz)) {
+            if (!isEmpty(nextProps.quiz.questions)) {
+                this.state.socket.emit("AddQuestionAll", nextProps.quiz.questions)
+            }
             this.setState({
                 questions: nextProps.quiz.questions,
                 type: nextProps.quiz.type,
@@ -107,6 +120,7 @@ class Play extends Component {
             nextQuestion = questions[currentQuestionIndex + 1];
             previousQuestion = questions[currentQuestionIndex - 1];
             const answer = currentQuestion.answer;
+            this.state.socket.emit("SetCurrentQuestion", { currentQuestion, currentQuestionIndex, questionInQuiz: this.state.questions, numberOfQuestions: this.state.numberOfQuestions })
             this.setState({
                 currentQuestion,
                 nextQuestion,
@@ -383,8 +397,8 @@ class Play extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.pauseTtiger !== this.state.pauseTtiger) {
-            let isPause = this.state.pauseTtiger
+        if (prevState.pauseTiger !== this.state.pauseTiger) {
+            let isPause = this.state.pauseTiger
             if (isPause) {
                 this.intervalPause = setInterval(() => {
                     this.setState({
@@ -397,10 +411,28 @@ class Play extends Component {
                 clearInterval(this.intervalPause)
             }
         }
+
     }
 
     pause() {
-        this.setState({ pauseTtiger: !this.state.pauseTtiger })
+        this.setState({ pauseTiger: !this.state.pauseTiger })
+    }
+
+    onMouseLeave(e) {
+        if (e !== undefined && e.target !== undefined && e.target.children !== undefined && e.target.children[0] !== undefined && e.target.children[0].innerHTML !== undefined) {
+            let hoveredOptions = e.target.children[0].innerHTML
+            console.log('gg')
+            this.state.socket.emit("OffHover", hoveredOptions)
+        }
+    }
+
+    onMouseEnter(e) {
+        if (e !== undefined && e.target !== undefined && e.target.children !== undefined && e.target.children[0] !== undefined && e.target.children[0].innerHTML !== undefined) {
+            let hoveredOptions = e.target.children[0].innerHTML
+            if (this && this.state && this.state.socket) {
+                this.state.socket.emit("OnHover", hoveredOptions)
+            }
+        }
     }
 
     render() {
@@ -468,7 +500,7 @@ class Play extends Component {
                             </button>
                         </p>
 
-                        {this.state.pauseTtiger ?
+                        {this.state.pauseTiger ?
                             <div>
                                 <h5>Пауза</h5>
                             </div> :
@@ -476,12 +508,12 @@ class Play extends Component {
                                 {currentQuestion.question !== undefined ? <ShowPictures question={currentQuestion} /> : <></>}
                                 <h5>{currentQuestion.question}</h5>
                                 <div className="option-container">
-                                    <p onClick={this.handleOptionClick} className="option"><span className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
-                                    <p onClick={this.handleOptionClick} className="option"><span className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
                                 </div>
                                 <div className="option-container">
-                                    <p onClick={this.handleOptionClick} className="option"><span className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
-                                    <p onClick={this.handleOptionClick} className="option"><span className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
                                 </div>
                             </>}
                     </div>

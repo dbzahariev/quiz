@@ -6,6 +6,7 @@ import ScrollToTop from './components/layout/ScrollToTop';
 import Home from './components/Home'
 import Footer from './components/layout/Footer'
 import Play from './components/free-quiz/Play';
+import Host from './components/free-quiz/HostOfQuiz';
 import QuizSummary from './components/free-quiz/QuizSummary';
 import AddNewQuestion from './components/addNewQuestion';
 import GameColorCheck from './components/games/gameColorCheck';
@@ -21,6 +22,7 @@ class App extends Component {
 						<Fragment>
 							<Route path="/" exact component={Home} />
 							<Route path="/play" exact component={Play} />
+							<Route path="/play/host" exact component={Host} />
 							<Route path="/play/quizSummary" exact component={QuizSummary} />
 							<Route path="/addNewQuestion" exact component={AddNewQuestion} />
 							<Route path="/gameColorCheck" exact component={GameColorCheck} />

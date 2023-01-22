@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from "axios";
-import { SOCKET_IO_SERVER } from "../Helper"
 
 import io from "socket.io-client"
+import { SOCKET_IO_SERVER } from "../Helper"
+
 const socket = io.connect(SOCKET_IO_SERVER)
 
 function AddNewQuestion() {
@@ -21,9 +22,15 @@ function AddNewQuestion() {
     socket.on("messageResponse", (data) => {
       console.log("rec", data)
     })
+
     socket.on("notification", (data) => {
       console.log("not", data)
     })
+
+    socket.on("getCurrentQuestion", (data) => {
+      console.log("new Cur quest", data)
+    })
+
     socket.on("newUserResponse", (data) => {
       console.log("newUserResponse", data)
     })
@@ -261,8 +268,6 @@ function AddNewQuestion() {
     return result
   }
 
-
-
   const AddQuestionAll = () => {
     socket.emit("AddQuestionAll", ["hi", "hi2"])
   }
@@ -271,12 +276,18 @@ function AddNewQuestion() {
     socket.emit("GetAllQuestion")
   }
 
+  const setCurrentQuestion = () => {
+    socket.emit("SetCurrentQuestion", state)
+    socket.emit("GetCurrentQuestion")
+  }
+
   return (
     <>
       <button onClick={sendMsg}>Send MSG</button>
       <button onClick={getAllUser}>getAllUser</button>
       <button onClick={newUser}>newUser</button>
       <button onClick={AddQuestionAll}>AddQuestionAll</button>
+      <button onClick={setCurrentQuestion}>SetCurrentQuestion</button>
       <button onClick={GetAllQuestion}>GetAllQuestion</button>
       <form style={{ paddingLeft: "10px", paddingTop: "20px", width: "80%" }}
         onSubmit={handleSubmit}
