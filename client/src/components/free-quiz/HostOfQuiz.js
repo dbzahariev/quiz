@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import io from "socket.io-client"
 import { SOCKET_IO_SERVER } from "../../Helper"
 import axios from "axios"
+import ShowPictures from '../showPictures';
 
 const socket = io.connect(SOCKET_IO_SERVER)
 
@@ -44,6 +45,7 @@ function HostOfQuiz() {
         <p>Оставащи общ брой въпроси: {remainingQuestion}</p>
         <p>Оставащи общ брой куизове: {Math.ceil(remainingQuestion / 15)}</p>
         <div style={{ display: "flex", justifyContent: "center", transition: "transform 0.25s ease 0s", transform: "scale(1)" }}></div>
+        <ShowPictures question={currentQuestion} />
         <h5>{question}</h5>
         <div className="option-container">
           <p className="option" style={{ visibility: "visible" }}>
