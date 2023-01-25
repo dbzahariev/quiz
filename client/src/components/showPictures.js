@@ -33,8 +33,8 @@ const ShowPictures = ({ question }) => {
       transform: transform,
     }}>
       {question.image !== undefined ?
-        <div style={{ height: "300px", display: "flex", justifyContent: "center", marginBottom: "3%", }}>
-          <img id="img1" onClick={toBigImg} style={{ height: "100%", cursor: "pointer", border: "1px solid black" }} src={question.image} alt="pictures"></img>
+        <div style={{ height: "300px", maxWidth: "90%", display: "flex", justifyContent: "center", marginBottom: "3%", }}>
+          <img id="img1" onClick={toBigImg} style={{ height: "100%", maxWidth: "100%", cursor: "pointer", border: "1px solid black" }} src={question.image} alt="pictures"></img>
         </div>
         : <></>}
     </div>
