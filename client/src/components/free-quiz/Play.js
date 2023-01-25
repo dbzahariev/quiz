@@ -320,7 +320,7 @@ class Play extends Component {
             classes: 'toast-valid',
             displayLength: 1500
         });
-        // this.deleteQuestion()
+        this.deleteQuestion()
         this.setState((prevState) => ({
             score: prevState.score + 1,
             correctAnswers: prevState.correctAnswers + 1,
