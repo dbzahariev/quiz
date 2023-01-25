@@ -15,19 +15,9 @@ export const fetchQuiz = () => dispatch => {
 
 export const getFreeQuestions = () => (dispatch) => {
     dispatch(setQuizLoading());
-    axios.get('api/all')
+    axios.get('api/getFreeQuiz')
         .then(res => {
-            let resFromDb = []
-
-            for (let index = 0; index < res.data.length; index++) {
-                const element = res.data[index];
-                if (element.answer === "Сурикати") {
-                    resFromDb.push(element)
-                }
-                if (element.image) {
-                    resFromDb.push(element)
-                }
-            }
+            let resFromDb = res.data
 
             dispatch({
                 type: LOAD_QUIZ,
