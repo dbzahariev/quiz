@@ -19,7 +19,7 @@ import ShowPictures from '../showPictures';
 import ExitBtn from "../exitbtn"
 import io from "socket.io-client"
 import { SOCKET_IO_SERVER } from "../../Helper"
-
+import ShowMeme from '../ShowMeme';
 
 class Play extends Component {
     constructor(props) {
@@ -47,6 +47,7 @@ class Play extends Component {
             time: {},
             pauseTime: 0,
             pauseTiger: false,
+            pauseFor: "",
 
             socket: io.connect(SOCKET_IO_SERVER)
         };
@@ -64,7 +65,7 @@ class Play extends Component {
         });
         this.startTimer();
         this.state.socket.on("notification", (data) => {
-            console.log("not2", data)
+            // console.log("not2", data)
         })
     }
 
@@ -135,7 +136,19 @@ class Play extends Component {
     }
 
     handleOptionClick = (e) => {
-        if (e.target.innerHTML.toLowerCase() === this.state.answer.toLowerCase()) {
+        let el = ""
+        if (e.target.children[1] !== undefined) {
+            el = e.target.children[1].innerHTML
+        }
+        if (el === "") {
+            if (e.target.parentNode.children[1].innerHTML !== undefined) {
+                el = e.target.parentNode.children[1].innerHTML
+            }
+        }
+        if (el === "") {
+            debugger
+        }
+        if (el.toLowerCase() === this.state.answer.toLowerCase()) {
             document.getElementById('correct-audio').play();
             setTimeout(() => {
                 this.correctAnswer();
@@ -307,12 +320,14 @@ class Play extends Component {
             classes: 'toast-valid',
             displayLength: 1500
         });
-        this.deleteQuestion()
+        // this.deleteQuestion()
         this.setState((prevState) => ({
             score: prevState.score + 1,
             correctAnswers: prevState.correctAnswers + 1,
             currentQuestionIndex: prevState.currentQuestionIndex + 1,
-            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
+            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1,
+            pauseFor: "correctAnswer",
+            pauseTiger: true
         }), () => {
             if (this.state.nextQuestion === undefined) {
                 this.endGame();
@@ -332,7 +347,9 @@ class Play extends Component {
         this.setState((prevState) => ({
             wrongAnswers: prevState.wrongAnswers + 1,
             currentQuestionIndex: prevState.currentQuestionIndex + 1,
-            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1
+            numberOfAnsweredQuestions: prevState.numberOfAnsweredQuestions + 1,
+            pauseFor: "wrongAnswer",
+            pauseTiger: true
         }), () => {
             if (this.state.nextQuestion === undefined) {
                 this.endGame();
@@ -415,13 +432,27 @@ class Play extends Component {
     }
 
     pause() {
-        this.setState({ pauseTiger: !this.state.pauseTiger })
+        this.setState({ pauseTiger: !this.state.pauseTiger, pauseFor: "" })
+    }
+
+    checkAnswer(ans) {
+        let { answer, optionA, optionB, optionC, optionD } = this.state.currentQuestion
+        if (answer === undefined) return false
+        let isA = answer === optionA
+        let isB = answer === optionB
+        let isC = answer === optionC
+        let isD = answer === optionD
+
+        if (isA && ans === "A") return true
+        if (isB && ans === "B") return true
+        if (isC && ans === "C") return true
+        if (isD && ans === "D") return true
+        return false
     }
 
     onMouseLeave(e) {
         if (e !== undefined && e.target !== undefined && e.target.children !== undefined && e.target.children[0] !== undefined && e.target.children[0].innerHTML !== undefined) {
             let hoveredOptions = e.target.children[0].innerHTML
-            console.log('gg')
             this.state.socket.emit("OffHover", hoveredOptions)
         }
     }
@@ -495,25 +526,26 @@ class Play extends Component {
                                 'warning': time.distance <= 120000,
                                 'invalid': time.distance < 30000
                             })} onClick={this.pause}>
-                                <span className="mdi mdi-clock-outline mdi-24px" style={{ position: 'relative', top: '2px' }}></span>
+                                <span className="mdi mdi-clock-outline mdi-24px" style={{ position: 'relative', top: '2px' }}>
+                                </span>
                                 {time.minutes}:{time.seconds}
                             </button>
                         </p>
 
                         {this.state.pauseTiger ?
                             <div>
-                                <h5>Пауза</h5>
+                                <ShowMeme type="Pause" pauseFor={this.state.pauseFor} addText="Пауза" />
                             </div> :
                             <>
                                 {currentQuestion.question !== undefined ? <ShowPictures question={currentQuestion} /> : <></>}
                                 <h5>{currentQuestion.question}</h5>
                                 <div className="option-container">
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("A") ? "green" : "" }} className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("C") ? "green" : "" }} className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
                                 </div>
                                 <div className="option-container">
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("B") ? "green" : "" }} className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("D") ? "green" : "" }} className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
                                 </div>
                             </>}
                     </div>

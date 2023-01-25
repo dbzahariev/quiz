@@ -58,10 +58,19 @@ let users = []
 let allQuestions = []
 let currentQuestion = {}
 let hoverOption = ""
+let AddedMeme = []
 socketIO.on('connection', (socket) => {
     console.log(`⚡: ${socket.id} user just connected!`)
     socket.on("message", data => {
         socketIO.emit("messageResponse", data)
+    })
+
+    socket.on("Add meme", data => {
+        AddedMeme.push(data)
+    })
+
+    socket.on("GetAddedMemes", data => {
+        socketIO.emit("notification", { msg: "Give you all Added meme", AddedMeme })
     })
 
     socket.on("SetCurrentQuestion", (data) => {
@@ -93,7 +102,6 @@ socketIO.on('connection', (socket) => {
     })
 
     socket.on("get-all-users", data => {
-        console.log('gg2')
         socket.broadcast.emit("notification", { data, users })
         socketIO.emit("notification", { data, users })
     })

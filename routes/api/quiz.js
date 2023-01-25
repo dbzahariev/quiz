@@ -51,8 +51,6 @@ function shuffleArray(array) {
 // @desc get questions
 // @access Private
 router.get('/getFreeQuiz', (req, res) => {
-    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    console.log("hiiii", fullUrl)
     Quiz.find({ delete: false })
         .then(quizzess => {
             let newQuestionsArr = shuffleArray(quizzess).slice(0, Math.min(quizzess.length, 15))
@@ -115,6 +113,10 @@ router.put('/updateQuestion/:id', (req, res) => {
         answer: req.body.answer,
         delete: req.body.delete || false,
     });
+
+    if (req.body.image) {
+        quiz.image = req.body.image
+    }
 
     Quiz.findOneAndDelete({ _id: req.params.id })
         .then((returnedQuiz) => {

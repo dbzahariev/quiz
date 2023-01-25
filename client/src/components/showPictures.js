@@ -21,6 +21,12 @@ const ShowPictures = ({ question }) => {
     }
   }
 
+  if (question.image !== undefined) {
+    if (question.image === "Insert") {
+      debugger
+    }
+  }
+
   return (
     <div style={{
       display: "flex", justifyContent: "center", transition: "transform 0.25s",
