@@ -540,12 +540,12 @@ class Play extends Component {
                                 {currentQuestion.question !== undefined ? <ShowPictures question={currentQuestion} /> : <></>}
                                 <h5>{currentQuestion.question}</h5>
                                 <div className="option-container">
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("A") ? "green" : "" }} className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("C") ? "green" : "" }} className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("A") ? "" : "" }} className="opt">A</span><span className="exactly-answer">{currentQuestion.optionA}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("C") ? "" : "" }} className="opt">C</span><span className="exactly-answer">{currentQuestion.optionC}</span></p>
                                 </div>
                                 <div className="option-container">
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("B") ? "green" : "" }} className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
-                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("D") ? "green" : "" }} className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("B") ? "" : "" }} className="opt">B</span><span className="exactly-answer">{currentQuestion.optionB}</span></p>
+                                    <p onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave} onClick={this.handleOptionClick} className="option"><span style={{ backgroundColor: this.checkAnswer("D") ? "" : "" }} className="opt">D</span><span className="exactly-answer">{currentQuestion.optionD}</span></p>
                                 </div>
                             </>}
                     </div>
