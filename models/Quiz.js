@@ -46,6 +46,10 @@ const QuizSchema = new Schema({
         type: String,
     },
 
+    hints: {
+        type: String,
+    },
+
     delete: {
         type: Boolean,
         default: true

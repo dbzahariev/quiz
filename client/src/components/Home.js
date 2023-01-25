@@ -20,7 +20,7 @@ const Home = () => {
 
     return (
         <Fragment>
-            <div style={{ width: "100px", height: "100px", backgroundColor: "red", }}>
+            <div style={{ width: "100px", height: "100px", backgroundColor: "red", display:"none" }}>
                 {[...correctImages, ...wrongImages, ...imagesFromDb].map((link, index) =>
                     <img style={{ width: "50px", }} key={index} src={link} alt={"image " + index} />
                 )}

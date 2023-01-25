@@ -29,6 +29,9 @@ router.post('/', (req, res) => {
     if (req.body.image) {
         quiz.image = req.body.image
     }
+    if (req.body.hints) {
+        quiz.hints = req.body.hints
+    }
 
     quiz.save()
         .then(quiz => {
@@ -116,6 +119,9 @@ router.put('/updateQuestion/:id', (req, res) => {
 
     if (req.body.image) {
         quiz.image = req.body.image
+    }
+    if (req.body.hints) {
+        quiz.hints = req.body.hints
     }
 
     Quiz.findOneAndDelete({ _id: req.params.id })

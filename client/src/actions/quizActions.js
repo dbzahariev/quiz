@@ -19,6 +19,8 @@ export const getFreeQuestions = () => (dispatch) => {
         .then(res => {
             let resFromDb = res.data
 
+            // resFromDb = resFromDb.filter((el) => el.hints !== undefined)
+
             dispatch({
                 type: LOAD_QUIZ,
                 payload: resFromDb

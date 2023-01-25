@@ -12,7 +12,7 @@ function HostOfQuiz() {
   const [allQuestions, setAllQuestions] = useState([])
   const [remainingQuestion, setRemainingQuestion] = useState(-1)
 
-  const fffff = () => {
+  const fixRemainQuestion = () => {
     axios.get('/api/all').then(data => {
       setRemainingQuestion(data.data.length)
     })
@@ -26,14 +26,13 @@ function HostOfQuiz() {
         setCurrentQuestion(data.currentQuestion.currentQuestion)
         setCurrentQuestionIndex(data.currentQuestion.currentQuestionIndex)
         setAllQuestions(data.currentQuestion.questionInQuiz)
-        fffff()
+        fixRemainQuestion()
       } else if ("Give you all Questions".indexOf(msg) !== -1) {
         // setAllQuestions(data.allQuestions)
       }
     })
     // eslint-disable-next-line
   }, [socket])
-
 
   const JSXQuestion = () => {
     if (currentQuestion === undefined || currentQuestion === null) return <div><h1>Няма започнат куиз</h1></div>
@@ -45,6 +44,9 @@ function HostOfQuiz() {
         <p>Оставащи общ брой въпроси: {remainingQuestion}</p>
         <p>Оставащи общ брой куизове: {Math.ceil(remainingQuestion / 15)}</p>
         <div style={{ display: "flex", justifyContent: "center", transition: "transform 0.25s ease 0s", transform: "scale(1)" }}></div>
+        {currentQuestion.hints ?
+          <p>Подсказка: {currentQuestion.hints}</p>
+          : <></>}
         <ShowPictures question={currentQuestion} />
         <h5>{question}</h5>
         <div className="option-container">

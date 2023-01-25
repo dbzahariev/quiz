@@ -65,7 +65,6 @@ function AddNewQuestion() {
 
   const prepManyQuestion222 = async () => {
     let allQuestions = prepareManyQuestions();
-
     // eslint-disable-next-line
     for (let element of allQuestions) {
       let imgIndex = element.question.indexOf("img")
@@ -126,7 +125,17 @@ function AddNewQuestion() {
       let gg = allQuestionsRowText[i]
       let ffvv = i % 6
       if (ffvv === 0) {
-        oneQuestion.question = gg
+        if (gg) {
+          let indexHints = gg.indexOf("#")
+          if (indexHints >= 0) {
+            let quest = gg.slice(0, indexHints - 1)
+            let hints = gg.slice(indexHints + 2)
+            oneQuestion.question = quest
+            oneQuestion.hints = hints
+          } else {
+            oneQuestion.question = gg
+          }
+        }
       } else if (ffvv === 1) {
         oneQuestion.optionA = gg
       } else if (ffvv === 2) {
